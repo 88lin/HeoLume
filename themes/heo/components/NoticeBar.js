@@ -11,9 +11,18 @@ export function NoticeBar() {
   let notices = siteConfig('HEO_NOTICE_BAR', null, CONFIG)
   const { locale } = useGlobal()
   if (typeof notices === 'string') {
-    notices = JSON.parse(notices)
+    try {
+      notices = JSON.parse(notices)
+    } catch {
+      notices = []
+    }
   }
-  if (!notices || notices?.length === 0) {
+  if (Array.isArray(notices)) {
+    notices = notices.filter(
+      notice => notice && typeof notice === 'object' && !Array.isArray(notice)
+    )
+  }
+  if (!Array.isArray(notices) || notices.length === 0) {
     return <></>
   }
 

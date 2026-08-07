@@ -15,6 +15,17 @@ const getTargetImageWidth = (width, maxWidth) => {
   return maxWidth
 }
 
+const normalizeImageSrc = src => {
+  if (!src) return ''
+  if (typeof window === 'undefined') return String(src)
+
+  try {
+    return new URL(src, window.location.href).href
+  } catch {
+    return String(src)
+  }
+}
+
 /**
  * 图片懒加载
  * @param {*} param0
@@ -46,25 +57,60 @@ export default function LazyImage({
       : placeholderSrc || defaultPlaceholderSrc
   )
   const [imageLoaded, setImageLoaded] = useState(Boolean(priority && src))
+  const loadNotifiedRef = useRef(false)
+  const errorStageRef = useRef(0)
+  const sourceRef = useRef('')
 
-  /**
-   * 占位图加载成功
-   */
-  const handleThumbnailLoaded = () => {
-    if (typeof onLoad === 'function') {
-      // onLoad() // 触发传递的onLoad回调函数
+  const handleImageLoaded = useCallback(loadedSrc => {
+    setImageLoaded(true)
+    imageRef.current?.classList.remove('lazy-image-placeholder')
+
+    // 预加载对象和原生 img 可能分别触发 load，业务回调只通知一次。
+    const normalizedLoadedSrc = normalizeImageSrc(loadedSrc)
+    if (
+      normalizedLoadedSrc &&
+      !loadNotifiedRef.current &&
+      typeof onLoad === 'function'
+    ) {
+      loadNotifiedRef.current = true
+      onLoad()
     }
-  }
+  }, [onLoad])
+
+  const handleElementLoaded = useCallback(
+    event => {
+      const element = event?.currentTarget
+      handleImageLoaded(element?.currentSrc || element?.src)
+    },
+    [handleImageLoaded]
+  )
 
   const handleImageError = useCallback(() => {
     if (imageRef.current) {
-      // 优先回退 fallbackSrc，再尝试 placeholderSrc，最后 defaultPlaceholderSrc
-      if (imageRef.current.src !== fallbackSrc && fallbackSrc) {
-        imageRef.current.src = fallbackSrc
-      } else if (imageRef.current.src !== placeholderSrc && placeholderSrc) {
-        imageRef.current.src = placeholderSrc
-      } else {
-        imageRef.current.src = defaultPlaceholderSrc
+      // 优先回退 fallbackSrc，再尝试 placeholderSrc，最后 defaultPlaceholderSrc。
+      const fallbackSources = [fallbackSrc, placeholderSrc, defaultPlaceholderSrc]
+        .filter(Boolean)
+        .filter(
+          (source, index, sources) =>
+            sources.findIndex(
+              candidate =>
+                normalizeImageSrc(candidate) === normalizeImageSrc(source)
+            ) === index
+        )
+      const currentSrc = normalizeImageSrc(
+        imageRef.current.currentSrc || imageRef.current.src
+      )
+      let stage = errorStageRef.current
+      while (
+        stage < fallbackSources.length &&
+        normalizeImageSrc(fallbackSources[stage]) === currentSrc
+      ) {
+        stage += 1
+      }
+      const nextSrc = fallbackSources[stage]
+      errorStageRef.current = stage + 1
+      if (nextSrc && normalizeImageSrc(nextSrc) !== currentSrc) {
+        imageRef.current.src = nextSrc
       }
       setImageLoaded(true)
       imageRef.current.classList.remove('lazy-image-placeholder')
@@ -72,29 +118,31 @@ export default function LazyImage({
   }, [defaultPlaceholderSrc, fallbackSrc, placeholderSrc])
 
   useEffect(() => {
+    if (!src) return
+
     const adjustedImageSrc =
       adjustImgSize(src, targetImageWidth) || defaultPlaceholderSrc
     const imageElement = imageRef.current
-    const handleImageLoaded = () => {
-      if (typeof onLoad === 'function') {
-        onLoad()
-      }
-      setImageLoaded(true)
-      if (imageRef.current) {
-        imageRef.current.classList.remove('lazy-image-placeholder')
-      }
+    let disposed = false
+    if (sourceRef.current !== adjustedImageSrc) {
+      sourceRef.current = adjustedImageSrc
+      errorStageRef.current = 0
+      loadNotifiedRef.current = false
     }
 
-    // 如果是优先级图片，直接加载
+    // priority图片已经由原生img直接请求，避免再次创建Image对象。
     if (priority) {
-      const img = new Image()
-      img.src = adjustedImageSrc
-      img.onload = () => {
-        setCurrentSrc(adjustedImageSrc)
-        handleImageLoaded(adjustedImageSrc)
+      setCurrentSrc(adjustedImageSrc)
+      setImageLoaded(true)
+      if (imageElement?.complete && imageElement.naturalWidth > 0) {
+        handleImageLoaded(imageElement.currentSrc || imageElement.src)
+      } else if (imageElement?.complete && imageElement.naturalWidth === 0) {
+        // hydration前已经失败的请求不会再次触发原生error事件，需要主动进入回退链。
+        handleImageError()
       }
-      img.onerror = handleImageError
-      return
+      return () => {
+        disposed = true
+      }
     }
 
     // 检查浏览器是否支持IntersectionObserver
@@ -103,17 +151,24 @@ export default function LazyImage({
       const img = new Image()
       img.src = adjustedImageSrc
       img.onload = () => {
+        if (disposed) return
+        errorStageRef.current = 0
         setCurrentSrc(adjustedImageSrc)
-        handleImageLoaded(adjustedImageSrc)
+        handleImageLoaded(img.currentSrc || img.src)
       }
-      img.onerror = handleImageError
-      return
+      img.onerror = () => {
+        if (!disposed) handleImageError()
+      }
+      return () => {
+        disposed = true
+      }
     }
 
     const observer = new IntersectionObserver(
       entries => {
+        if (disposed) return
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && !disposed) {
             // 预加载图片
             const img = new Image()
             // 设置图片解码优先级
@@ -122,10 +177,14 @@ export default function LazyImage({
             }
             img.src = adjustedImageSrc
             img.onload = () => {
+              if (disposed) return
+              errorStageRef.current = 0
               setCurrentSrc(adjustedImageSrc)
-              handleImageLoaded(adjustedImageSrc)
+              handleImageLoaded(img.currentSrc || img.src)
             }
-            img.onerror = handleImageError
+            img.onerror = () => {
+              if (!disposed) handleImageError()
+            }
 
             observer.unobserve(entry.target)
           }
@@ -142,6 +201,7 @@ export default function LazyImage({
     }
 
     return () => {
+      disposed = true
       if (imageElement) {
         observer.unobserve(imageElement)
       }
@@ -153,7 +213,7 @@ export default function LazyImage({
     defaultPlaceholderSrc,
     fallbackSrc,
     handleImageError,
-    onLoad,
+    handleImageLoaded,
     placeholderSrc
   ])
 
@@ -163,7 +223,7 @@ export default function LazyImage({
     src: currentSrc,
     'data-src': src, // 存储原始图片地址
     alt: alt || title || 'Image in ' + (typeof window !== 'undefined' ? window.location.pathname.split('/').pop() || 'homepage' : 'article'),
-    onLoad: handleThumbnailLoaded,
+    onLoad: priority ? handleElementLoaded : undefined,
     onError: handleImageError,
     className: `${className || ''}${imageLoaded ? '' : ' lazy-image-placeholder'}`,
     style: {
@@ -199,7 +259,6 @@ export default function LazyImage({
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img alt={imgProps.alt} {...imgProps} />
-      {/* 预加载 */}
       {priority && (
         <Head>
           <link

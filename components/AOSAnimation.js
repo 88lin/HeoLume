@@ -24,20 +24,22 @@ export default function AOSAnimation() {
         'https://cdn.jsdmirror.com/npm/aos@2.3.4/dist/aos.min.css',
         'css'
       )
-    ]).then(() => {
-      if (window.AOS) {
-        window.AOS.init({
-          debounceDelay: 100,
-          throttleDelay: 120,
-          once: true
-        })
-      }
-    })
+    ])
+      .then(() => {
+        if (window.AOS) {
+          window.AOS.init({
+            debounceDelay: 100,
+            throttleDelay: 120,
+            once: true
+          })
+        }
+      })
+      .catch(() => {})
   }
   useEffect(() => {
     if (window.requestIdleCallback) {
       const id = window.requestIdleCallback(initAOS, { timeout: 3000 })
-      return () => window.cancelIdleCallback(id)
+      return () => window.cancelIdleCallback?.(id)
     }
     const id = window.setTimeout(initAOS, 2000)
     return () => window.clearTimeout(id)

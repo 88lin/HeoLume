@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import LazyImage from '@/components/LazyImage'
 
 // Mock IntersectionObserver
@@ -57,6 +57,54 @@ describe('LazyImage Component', () => {
     expect(image).toHaveAttribute('loading', 'eager')
   })
 
+  it('falls back when a priority image failed before hydration', () => {
+    const completeDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLImageElement.prototype,
+      'complete'
+    )
+    const naturalWidthDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLImageElement.prototype,
+      'naturalWidth'
+    )
+
+    Object.defineProperty(HTMLImageElement.prototype, 'complete', {
+      configurable: true,
+      get: () => true
+    })
+    Object.defineProperty(HTMLImageElement.prototype, 'naturalWidth', {
+      configurable: true,
+      get: () => 0
+    })
+
+    try {
+      render(
+        <LazyImage
+          {...defaultProps}
+          priority
+          fallbackSrc='/fallback.jpg'
+        />
+      )
+      const image = screen.getByAltText('Test image')
+
+      expect(image.src).toContain('/fallback.jpg')
+    } finally {
+      if (completeDescriptor) {
+        Object.defineProperty(
+          HTMLImageElement.prototype,
+          'complete',
+          completeDescriptor
+        )
+      }
+      if (naturalWidthDescriptor) {
+        Object.defineProperty(
+          HTMLImageElement.prototype,
+          'naturalWidth',
+          naturalWidthDescriptor
+        )
+      }
+    }
+  })
+
   it('uses lazy loading by default', () => {
     render(<LazyImage {...defaultProps} />)
     
@@ -89,28 +137,42 @@ describe('LazyImage Component', () => {
 
   it('handles load event', async () => {
     const handleLoad = jest.fn()
-    const OriginalImage = global.Image
-    // jsdom does not finish decoding remote URLs; defer onload until after handlers attach (matches browser ordering).
-    global.Image = class MockImage {
-      constructor() {
-        this.onload = null
-      }
+    render(<LazyImage {...defaultProps} priority onLoad={handleLoad} />)
+    const image = screen.getByAltText('Test image')
+    fireEvent.load(image)
+    fireEvent.load(image)
+    await waitFor(() => {
+      expect(handleLoad).toHaveBeenCalledTimes(1)
+    })
+  })
 
-      set src(_val) {
-        queueMicrotask(() => {
-          if (this.onload) this.onload()
-        })
-      }
-    }
+  it('does not treat the placeholder load as the image load', () => {
+    const handleLoad = jest.fn()
+    render(<LazyImage {...defaultProps} onLoad={handleLoad} />)
+    const image = screen.getByAltText('Test image')
 
-    try {
-      render(<LazyImage {...defaultProps} priority onLoad={handleLoad} />)
-      await waitFor(() => {
-        expect(handleLoad).toHaveBeenCalled()
-      })
-    } finally {
-      global.Image = OriginalImage
-    }
+    fireEvent.load(image)
+
+    expect(handleLoad).not.toHaveBeenCalled()
+  })
+
+  it('notifies once when a priority image succeeds through a fallback', () => {
+    const handleLoad = jest.fn()
+    render(
+      <LazyImage
+        {...defaultProps}
+        priority
+        fallbackSrc='/fallback.jpg'
+        onLoad={handleLoad}
+      />
+    )
+    const image = screen.getByAltText('Test image')
+
+    fireEvent.error(image)
+    fireEvent.load(image)
+    fireEvent.load(image)
+
+    expect(handleLoad).toHaveBeenCalledTimes(1)
   })
 
   it('handles error gracefully', () => {
@@ -119,10 +181,31 @@ describe('LazyImage Component', () => {
     const image = screen.getByAltText('Test image')
     
     // Simulate image error
-    image.dispatchEvent(new Event('error'))
+    fireEvent.error(image)
     
     // Component should still be in the document
     expect(image).toBeInTheDocument()
+  })
+
+  it('advances through fallback sources without repeating a failed URL', () => {
+    render(
+      <LazyImage
+        {...defaultProps}
+        fallbackSrc='/fallback.jpg'
+        placeholderSrc='/placeholder.jpg'
+      />
+    )
+    const image = screen.getByAltText('Test image')
+
+    fireEvent.error(image)
+    expect(image.src).toContain('/fallback.jpg')
+    fireEvent.error(image)
+    expect(image.src).toContain('/placeholder.jpg')
+    fireEvent.error(image)
+    const finalSrc = image.src
+    fireEvent.error(image)
+
+    expect(image.src).toBe(finalSrc)
   })
 
   it('applies correct decoding attribute', () => {

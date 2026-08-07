@@ -133,6 +133,9 @@ const ExternalPluginEnabled = props => {
 
   const HEO_ENABLE_AOS = siteConfig('HEO_ENABLE_AOS', false)
   const ENABLE_ICON_FONT = siteConfig('ENABLE_ICON_FONT', false)
+  const isHeoTheme = String(theme || '').toLowerCase() === 'heo'
+  const hasAosElements =
+    isBrowser && Boolean(document.querySelector('[data-aos]'))
 
   const UMAMI_HOST = siteConfig('UMAMI_HOST', null, NOTION_CONFIG)
   const UMAMI_ID = siteConfig('UMAMI_ID', null, NOTION_CONFIG)
@@ -156,8 +159,8 @@ const ExternalPluginEnabled = props => {
 
     const scheduleTask = callback => {
       if (window.requestIdleCallback) {
-        const taskId = window.requestIdleCallback(callback)
-        return () => window.cancelIdleCallback(taskId)
+        const taskId = window.requestIdleCallback(callback, { timeout: 3000 })
+        return () => window.cancelIdleCallback?.(taskId)
       }
       const timeoutId = window.setTimeout(() => callback(), 0)
       return () => window.clearTimeout(timeoutId)
@@ -166,20 +169,23 @@ const ExternalPluginEnabled = props => {
     const cancelTasks = []
     cancelTasks.push(
       scheduleTask(() => {
+        const loadOptionalResource = (url, type) =>
+          loadExternalResource(url, type).catch(() => null)
+
         if (IMG_SHADOW) {
-          loadExternalResource('/css/img-shadow.css', 'css')
+          loadOptionalResource('/css/img-shadow.css', 'css')
         }
 
         if (ANIMATE_CSS_URL) {
-          loadExternalResource(ANIMATE_CSS_URL, 'css')
+          loadOptionalResource(ANIMATE_CSS_URL, 'css')
         }
 
         for (const url of externalJsList) {
-          loadExternalResource(url, 'js')
+          loadOptionalResource(url, 'js')
         }
 
         for (const url of externalCssList) {
-          loadExternalResource(url, 'css')
+          loadOptionalResource(url, 'css')
         }
       })
     )
@@ -243,7 +249,7 @@ const ExternalPluginEnabled = props => {
       const id = window.requestIdleCallback(() => setPluginsIdle(true), {
         timeout: 3000
       })
-      return () => window.cancelIdleCallback(id)
+      return () => window.cancelIdleCallback?.(id)
     }
     const id = window.setTimeout(() => setPluginsIdle(true), 2000)
     return () => window.clearTimeout(id)
@@ -264,9 +270,11 @@ const ExternalPluginEnabled = props => {
       {ANALYTICS_ACKEE_TRACKER && <Ackee />}
       {ANALYTICS_GOOGLE_ID && <Gtag />}
       {ANALYTICS_VERCEL && <Analytics />}
-      {ANALYTICS_BUSUANZI_ENABLE && <Busuanzi />}
+      {ANALYTICS_BUSUANZI_ENABLE && (!isHeoTheme || pluginsIdle) && (
+        <Busuanzi />
+      )}
       {FACEBOOK_APP_ID && FACEBOOK_PAGE_ID && <Messenger />}
-      {FIREWORKS && <Fireworks />}
+      {FIREWORKS && (!isHeoTheme || pluginsIdle) && <Fireworks />}
       {SAKURA && <Sakura />}
       {STARRY_SKY && <StarrySky />}
       {MUSIC_PLAYER && <MusicPlayer />}
@@ -285,7 +293,7 @@ const ExternalPluginEnabled = props => {
       {/* <VConsole /> */}
       {ENABLE_NPROGRSS && <LoadingProgress />}
       {pluginsIdle &&
-        (String(theme || '').toLowerCase() !== 'heo' || HEO_ENABLE_AOS) && (
+        (!isHeoTheme || (HEO_ENABLE_AOS && hasAosElements)) && (
           <AosAnimation />
         )}
       {ANALYTICS_51LA_ID && ANALYTICS_51LA_CK && <LA51 />}

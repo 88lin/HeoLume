@@ -82,11 +82,18 @@ const LayoutBase = props => {
   )
   const HEO_LOADING_COVER = siteConfig('HEO_LOADING_COVER', true, CONFIG)
   const HEO_LENIS_ENABLE = siteConfig('HEO_LENIS_ENABLE', true, CONFIG)
+  const HEO_ENABLE_AOS = siteConfig('HEO_ENABLE_AOS', false, CONFIG)
 
-  // 加载wow动画
+  // 只有明确开启 Heo 滚动动画时才加载 WOW，避免关闭动画仍请求 CDN。
   useEffect(() => {
+    if (
+      !HEO_ENABLE_AOS ||
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return
+    }
     loadWowJS()
-  }, [])
+  }, [HEO_ENABLE_AOS])
 
   return (
     <div

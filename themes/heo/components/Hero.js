@@ -249,6 +249,8 @@ function TopGroup(props) {
                 <LazyImage
                   priority={index === 0}
                   className='h-24 object-cover'
+                  width={320}
+                  height={96}
                   alt={p?.title}
                   src={p?.pageCoverThumbnail || siteInfo?.pageCover}
                 />

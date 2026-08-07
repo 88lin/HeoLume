@@ -4,7 +4,7 @@ import { createSiteUrl, normalizeSiteUrl } from '@/lib/sitemap-utils'
 import { isHttpLink, loadExternalResource } from '@/lib/utils'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 /**
  * 页面的Head头，有用于SEO
@@ -23,32 +23,53 @@ const SEO = props => {
   const router = useRouter()
   const meta = getSEOMeta(props, router, useGlobal()?.locale)
   const webFontUrl = siteConfig('FONT_URL')
-  const hasWebFontUrl = Array.isArray(webFontUrl)
-    ? webFontUrl.filter(Boolean).length > 0
-    : Boolean(webFontUrl)
+  const webFontUrls = useMemo(
+    () =>
+      (Array.isArray(webFontUrl) ? webFontUrl : [webFontUrl]).filter(
+        value => typeof value === 'string' && value.trim()
+      ).map(value => value.trim()),
+    [webFontUrl]
+  )
+  const hasWebFontUrl = webFontUrls.length > 0
 
   useEffect(() => {
     if (!hasWebFontUrl) return
 
-    const timeoutId = window.setTimeout(() => {
-      // 使用WebFontLoader字体加载
-      loadExternalResource(
-        'https://cdn.jsdmirror.com/npm/webfontloader@1.6.28/webfontloader.js',
-        'js'
-      ).then(url => {
-        const WebFont = window?.WebFont
-        if (WebFont) {
-          WebFont.load({
-            custom: {
-              urls: webFontUrl
-            }
-          })
-        }
-      })
-    }, 1500)
+    let cancelled = false
+    let idleId
+    let timeoutId
+    let loadHandler
 
-    return () => window.clearTimeout(timeoutId)
-  }, [hasWebFontUrl, webFontUrl])
+    const loadFonts = () => {
+      if (cancelled) return
+      const load = () => {
+        if (cancelled) return
+        Promise.allSettled(
+          webFontUrls.map(url => loadExternalResource(url, 'css'))
+        )
+      }
+
+      if (window.requestIdleCallback) {
+        idleId = window.requestIdleCallback(load, { timeout: 2000 })
+      } else {
+        timeoutId = window.setTimeout(load, 1000)
+      }
+    }
+
+    if (document.readyState === 'complete') {
+      loadFonts()
+    } else {
+      loadHandler = loadFonts
+      window.addEventListener('load', loadHandler, { once: true })
+    }
+
+    return () => {
+      cancelled = true
+      if (loadHandler) window.removeEventListener('load', loadHandler)
+      if (idleId !== undefined) window.cancelIdleCallback?.(idleId)
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+    }
+  }, [hasWebFontUrl, webFontUrls])
 
   // SEO关键词
   const KEYWORDS = siteConfig('KEYWORDS')
@@ -275,20 +296,6 @@ const SEO = props => {
       )}
       <link rel='dns-prefetch' href='https://www.google-analytics.com' />
       <link rel='dns-prefetch' href='https://www.googletagmanager.com' />
-      {hasWebFontUrl && (
-        <link
-          rel='preconnect'
-          href='https://cdn.jsdmirror.com'
-          crossOrigin='anonymous'
-        />
-      )}
-      {hasWebFontUrl && (
-        <link
-          rel='preconnect'
-          href='https://fonts.gstatic.com'
-          crossOrigin='anonymous'
-        />
-      )}
 
       {children}
     </Head>
