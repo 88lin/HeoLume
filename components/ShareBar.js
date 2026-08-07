@@ -21,7 +21,7 @@ const ShareBar = ({ post, className = '' }) => {
 
   return (
     <section className={className}>
-      <div className='overflow-x-auto rounded-[1.75rem] border border-slate-200/80 bg-white/96 p-4 shadow-[0_16px_42px_rgba(15,23,42,0.05)] dark:border-slate-700/60 dark:bg-[#1f2026]'>
+      <div className='overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white/96 p-4 shadow-[0_16px_42px_rgba(15,23,42,0.05)] dark:border-slate-700/60 dark:bg-[#1f2026]'>
         <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
           <div className='px-1'>
             <div className='text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500'>
@@ -31,8 +31,10 @@ const ShareBar = ({ post, className = '' }) => {
               分享这篇文章
             </div>
           </div>
-          <div className='flex w-full md:w-auto md:justify-end'>
-            <ShareButtons post={post} />
+          <div className='w-full min-w-0 overflow-x-auto scroll-hidden touch-pan-x md:w-auto md:max-w-full'>
+            <div className='flex w-max min-w-full flex-nowrap md:justify-end [&>*]:shrink-0'>
+              <ShareButtons post={post} />
+            </div>
           </div>
         </div>
       </div>
