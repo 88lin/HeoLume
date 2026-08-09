@@ -68,7 +68,7 @@ export default function DocsChat() {
               ×
             </button>
           </header>
-          <div className='docs-chat-messages'>
+          <div data-lenis-prevent className='docs-chat-messages'>
             {messages.map(message => (
               <p
                 key={message.id}

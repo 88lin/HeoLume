@@ -156,6 +156,23 @@ describe('LazyImage Component', () => {
     expect(handleLoad).not.toHaveBeenCalled()
   })
 
+  it('notifies onLoad when a non-priority fallback image loads', () => {
+    const handleLoad = jest.fn()
+    render(
+      <LazyImage
+        {...defaultProps}
+        fallbackSrc='/fallback.jpg'
+        onLoad={handleLoad}
+      />
+    )
+    const image = screen.getByAltText('Test image')
+
+    fireEvent.error(image)
+    fireEvent.load(image)
+
+    expect(handleLoad).toHaveBeenCalledTimes(1)
+  })
+
   it('notifies once when a priority image succeeds through a fallback', () => {
     const handleLoad = jest.fn()
     render(
@@ -191,6 +208,7 @@ describe('LazyImage Component', () => {
     render(
       <LazyImage
         {...defaultProps}
+        priority
         fallbackSrc='/fallback.jpg'
         placeholderSrc='/placeholder.jpg'
       />
@@ -206,6 +224,40 @@ describe('LazyImage Component', () => {
     fireEvent.error(image)
 
     expect(image.src).toBe(finalSrc)
+  })
+
+  it('does not retry the original source when it is also a fallback option', () => {
+    render(
+      <LazyImage
+        src='/same-image.jpg'
+        alt='Test image'
+        priority
+        fallbackSrc='/first-fallback.jpg'
+        placeholderSrc='/same-image.jpg'
+      />
+    )
+    const image = screen.getByAltText('Test image')
+
+    fireEvent.error(image)
+    fireEvent.error(image)
+
+    expect(image.src).not.toContain('/same-image.jpg')
+  })
+
+  it('does not mark the original source as failed when only its placeholder fails', () => {
+    render(
+      <LazyImage
+        src='/original-image.jpg'
+        alt='Test image'
+        fallbackSrc='/original-image.jpg'
+        placeholderSrc='/broken-placeholder.jpg'
+      />
+    )
+    const image = screen.getByAltText('Test image')
+
+    fireEvent.error(image)
+
+    expect(image.src).toContain('/original-image.jpg')
   })
 
   it('applies correct decoding attribute', () => {

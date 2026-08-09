@@ -33,7 +33,7 @@ const SEO = props => {
   const hasWebFontUrl = webFontUrls.length > 0
 
   useEffect(() => {
-    if (!hasWebFontUrl) return
+    if (webFontUrls.length === 0) return
 
     let cancelled = false
     let idleId
@@ -69,7 +69,7 @@ const SEO = props => {
       if (idleId !== undefined) window.cancelIdleCallback?.(idleId)
       if (timeoutId !== undefined) window.clearTimeout(timeoutId)
     }
-  }, [hasWebFontUrl, webFontUrls])
+  }, [webFontUrls])
 
   // SEO关键词
   const KEYWORDS = siteConfig('KEYWORDS')

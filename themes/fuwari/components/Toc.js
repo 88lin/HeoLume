@@ -66,7 +66,9 @@ const Toc = ({ toc }) => {
 
   return (
     <div className='px-3'>
-      <div className='fuwari-toc-wrapper overflow-y-auto max-h-96 overscroll-none scroll-hidden'>
+      <div
+        data-lenis-prevent
+        className='fuwari-toc-wrapper overflow-y-auto max-h-96 overscroll-none scroll-hidden'>
         <nav className='h-full'>
           {toc.map(tocItem => {
             const id = uuidToId(tocItem.id)

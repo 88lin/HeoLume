@@ -1051,7 +1051,7 @@ const BookShelf = ({ bookStats }) => {
                       </div>
                       <strong>{topicStats.length}</strong>
                     </div>
-                    <div className={styles.topicCloud}>
+                    <div data-lenis-prevent className={styles.topicCloud}>
                       {topicStats.map((topic, index) => (
                         <button
                           type='button'

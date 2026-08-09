@@ -3,6 +3,8 @@
  * @param config
  */
 function createFireworks({ config, anime }) {
+  window.destroyFireworks?.()
+
   const canvasElement = document.createElement('canvas')
   canvasElement.id = 'fireworks'
   canvasElement.className = 'fireworks'
@@ -32,6 +34,7 @@ function createFireworks({ config, anime }) {
 
   let pointerX = 0
   let pointerY = 0
+  const runningAnimations = new Set()
 
   // sky blue
   const colors = config.colors
@@ -138,7 +141,7 @@ function createFireworks({ config, anime }) {
       particules.push(createParticule(x, y))
     }
 
-    anime
+    const animation = anime
       .timeline()
       .add({
         targets: particules,
@@ -172,6 +175,11 @@ function createFireworks({ config, anime }) {
         },
         0
       )
+
+    runningAnimations.add(animation)
+    if (animation.finished) {
+      animation.finished.then(() => runningAnimations.delete(animation)).catch(() => {})
+    }
   }
 
   const render = anime({
@@ -181,24 +189,31 @@ function createFireworks({ config, anime }) {
     }
   })
 
-  document.addEventListener(
-    'mousedown',
-    e => {
-      render.play()
-      updateCoords(e)
-      animateParticules(pointerX, pointerY)
-    },
-    false
-  )
+  const handleMouseDown = e => {
+    render.play()
+    updateCoords(e)
+    animateParticules(pointerX, pointerY)
+  }
+  const handleResize = () => {
+    setCanvasSize(canvasEl)
+  }
+  const destroy = () => {
+    render.pause()
+    runningAnimations.forEach(animation => animation.pause())
+    runningAnimations.clear()
+    document.removeEventListener('mousedown', handleMouseDown, false)
+    window.removeEventListener('resize', handleResize, false)
+    canvasElement.parentNode?.removeChild(canvasElement)
+    if (window.destroyFireworks === destroy) {
+      delete window.destroyFireworks
+    }
+  }
+
+  window.destroyFireworks = destroy
+  document.addEventListener('mousedown', handleMouseDown, false)
 
   setCanvasSize(canvasEl)
-  window.addEventListener(
-    'resize',
-    () => {
-      setCanvasSize(canvasEl)
-    },
-    false
-  )
+  window.addEventListener('resize', handleResize, false)
 }
 
 window.createFireworks = createFireworks

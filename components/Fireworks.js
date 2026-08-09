@@ -47,6 +47,7 @@ const Fireworks = () => {
 
     return () => {
       disposed = true
+      window.destroyFireworks?.()
       // 在组件卸载时清理资源
       const fireworksElements = document.getElementsByClassName('fireworks')
       while (fireworksElements.length > 0) {
