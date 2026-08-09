@@ -351,7 +351,6 @@ function TodayCard({ cRef }) {
 
     let animationFrameId
     let hasStarted = false
-    let pageLoadHandler
 
     const startAnimation = () => {
       if (hasStarted) return
@@ -390,24 +389,16 @@ function TodayCard({ cRef }) {
       animationFrameId = requestAnimationFrame(startWhenCardIsRevealed)
     }
 
-    const startAfterPageReady = () => {
-      // 等首屏资源完成后再检查遮罩，避免服务端动画和水合后的动画重复播放。
+    const startAfterLayout = () => {
+      // 只等待两帧完成水合后的布局，不阻塞在 window.load，避免首屏动画无意义地延迟。
       animationFrameId = requestAnimationFrame(() => {
         animationFrameId = requestAnimationFrame(startWhenCardIsRevealed)
       })
     }
 
-    if (document.readyState === 'complete') {
-      startAfterPageReady()
-    } else {
-      pageLoadHandler = startAfterPageReady
-      window.addEventListener('load', pageLoadHandler, { once: true })
-    }
+    startAfterLayout()
 
     return () => {
-      if (pageLoadHandler) {
-        window.removeEventListener('load', pageLoadHandler)
-      }
       if (animationFrameId) cancelAnimationFrame(animationFrameId)
     }
   }, [cover, isAnimatedHelloCover])
