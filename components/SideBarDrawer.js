@@ -57,6 +57,7 @@ const SideBarDrawer = ({
       className={`block ${showOnPC ? '' : 'lg:hidden'} top-0`}>
       <div
         id='sidebar-drawer'
+        data-lenis-prevent
         className={`z-[70] ${className} ${isOpen ? 'translate-x-0 opacity-100' : 'pointer-events-none translate-x-[-104%] opacity-0'} transform-gpu transition-[transform,opacity] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] bg-white dark:bg-gray-900 flex flex-col fixed h-full left-0 overflow-y-scroll top-0 will-change-transform`}>
         {children}
       </div>

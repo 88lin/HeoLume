@@ -108,6 +108,7 @@ const Catalog = ({ toc, onItemClick }) => {
         {locale.COMMON.TABLE_OF_CONTENTS}
       </div>
       <div
+        data-lenis-prevent
         className='overflow-y-auto max-h-[60vh] lg:max-h-96 overscroll-none scroll-hidden'
         ref={tRef}>
         <nav className='h-full'>

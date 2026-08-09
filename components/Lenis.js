@@ -28,13 +28,6 @@ const Lenis = () => {
         const { default: LenisLib } = await import('lenis')
         if (isDisposed) return
 
-        const platform =
-          navigator.userAgentData?.platform || navigator.platform || ''
-        const isAppleLike =
-          /mac|iphone|ipad|ipod/i.test(platform) ||
-          /Mac OS X|iPad|iPhone|iPod/i.test(navigator.userAgent)
-        const wheelMultiplier = isAppleLike ? 0.4 : 0.86
-
         const lenis = new LenisLib({
           duration: 1.1,
           easing: t => 1 - Math.pow(1 - t, 3),
@@ -46,9 +39,10 @@ const Lenis = () => {
           orientation: 'vertical',
           gestureOrientation: 'vertical',
           smoothWheel: true,
-          // 让嵌套的可滚动容器（如文章目录）自行原生滚动，不被 Lenis 劫持
-          allowNestedScroll: true,
-          wheelMultiplier,
+          // 嵌套滚动容器通过 data-lenis-prevent 显式退出，避免每个滚轮事件遍历 DOM。
+          allowNestedScroll: false,
+          // 统一桌面端体感；旧版 Lenis 的 Mac 0.4 倍率会让触控板滚动明显变慢。
+          wheelMultiplier: 0.86,
           syncTouch: false,
           touchMultiplier: 2
         })

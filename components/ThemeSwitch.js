@@ -361,7 +361,7 @@ function ThemeConsole ({ meta, onClose }) {
             {notice}
           </div>
         ) : null}
-        <div className='max-h-[72vh] space-y-3 overflow-y-auto p-3 sm:p-4'>
+        <div data-lenis-prevent className='max-h-[72vh] space-y-3 overflow-y-auto p-3 sm:p-4'>
           <section className='overflow-hidden rounded-2xl border border-gray-100 bg-gray-50/70 dark:border-gray-800 dark:bg-gray-900/60'>
             <div className='flex items-center'>
               <button
@@ -685,7 +685,7 @@ const ThemeSwitch = () => {
         onClose={() => {
           setSideBarVisible(false)
         }}>
-        <div className='flex min-h-0 flex-1 flex-col overflow-y-auto'>
+        <div data-lenis-prevent className='flex min-h-0 flex-1 flex-col overflow-y-auto'>
           <div className='sticky top-0 z-[1] border-b border-gray-100 bg-white/95 px-5 py-4 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/95'>
             <div className='flex items-start justify-between gap-3'>
               <div className='min-w-0'>

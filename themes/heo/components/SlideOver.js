@@ -70,7 +70,7 @@ export default function SlideOver(props) {
                 leaveTo='translate-x-full'>
                 <Dialog.Panel className='pointer-events-auto relative w-96 max-w-md'>
                   {/* 内容 */}
-                  <div className='flex h-full flex-col overflow-y-scroll bg-[#f0ebe3] dark:bg-[#1a1a2e] py-2 shadow-2xl rounded-l-[2rem]'>
+                  <div data-lenis-prevent className='flex h-full flex-col overflow-y-scroll bg-[#f0ebe3] dark:bg-[#1a1a2e] py-2 shadow-2xl rounded-l-[2rem]'>
                     {/* 关闭按钮 - 右上角 */}
                     <Transition.Child
                       as={Fragment}
