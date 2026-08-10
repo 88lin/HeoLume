@@ -1,6 +1,5 @@
 const fs = require('node:fs')
 const path = require('node:path')
-const crypto = require('node:crypto')
 const BLOG = require('./blog.config')
 const { extractLangPrefix } = require('./lib/utils/pageId')
 const { isExport } = require('./lib/utils/buildMode')
@@ -13,17 +12,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 // 扫描项目 /themes下的目录名
 const themes = scanSubdirectories(path.resolve(__dirname, 'themes'))
-const themeRuntimeReady = (function () {
-  const actual = crypto
-    .createHash('sha256')
-    .update(process.env.THEME_RUNTIME_TOKEN || '')
-    .digest()
-  const expected = Buffer.from(
-    'f36d37e4915b4c8f89d21b82016c9e0d56253c0e7456a3c85704968bf993ac43',
-    'hex'
-  )
-  return crypto.timingSafeEqual(actual, expected)
-})()
 // 检测用户开启的多语言
 const locales = (function () {
   // 根据BLOG_NOTION_PAGE_ID 检查支持多少种语言数据.
@@ -416,36 +404,7 @@ const nextConfig = {
         //   }
       ]
     },
-  webpack: (config, { dev, isServer, webpack }) => {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'globalThis.__NN_CONFIG_STATE__': JSON.stringify(
-          themeRuntimeReady ? 9283 : 0
-        ),
-        'globalThis.__NN_STYLE_STATE__': JSON.stringify(
-          themeRuntimeReady ? 6173 : 0
-        ),
-        'globalThis.__NN_ROUTE_STATE__': JSON.stringify(
-          themeRuntimeReady ? 4519 : 0
-        ),
-        'globalThis.__NN_NAV_STATE__': JSON.stringify(
-          themeRuntimeReady ? 3461 : 0
-        ),
-        'globalThis.__NN_POST_STATE__': JSON.stringify(
-          themeRuntimeReady ? 7829 : 0
-        ),
-        'globalThis.__NN_WIDGET_STATE__': JSON.stringify(
-          themeRuntimeReady ? 2593 : 0
-        ),
-        'globalThis.__NN_FEED_STATE__': JSON.stringify(
-          themeRuntimeReady ? 8647 : 0
-        ),
-        'globalThis.__NN_ARTICLE_STATE__': JSON.stringify(
-          themeRuntimeReady ? 5939 : 0
-        )
-      })
-    )
-
+  webpack: (config, { dev, isServer }) => {
     config.ignoreWarnings = [
       ...(config.ignoreWarnings || []),
       {
