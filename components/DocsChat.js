@@ -8,12 +8,27 @@ const makeMessage = (role, text) => ({
 })
 
 export default function DocsChat() {
-  const api = siteConfig('DOCS_CHAT_API')
-  const title = siteConfig('DOCS_CHAT_TITLE', 'AI 助手')
-  const welcome = siteConfig(
-    'DOCS_CHAT_WELCOME',
-    '你好，我是这个站点的 AI 助手。你可以问我站点内容相关问题。'
-  )
+  const configuredAiChatApi = siteConfig('AI_CHAT_API')
+  const configuredDocsChatApi = siteConfig('DOCS_CHAT_API')
+  const aiChatApi =
+    typeof configuredAiChatApi === 'string' ? configuredAiChatApi.trim() : ''
+  const docsChatApi =
+    typeof configuredDocsChatApi === 'string'
+      ? configuredDocsChatApi.trim()
+      : ''
+  const api = aiChatApi || docsChatApi
+  const title = aiChatApi
+    ? siteConfig('AI_CHAT_TITLE', 'AI 助手')
+    : siteConfig('DOCS_CHAT_TITLE', 'AI 助手')
+  const welcome = aiChatApi
+    ? siteConfig(
+        'AI_CHAT_WELCOME',
+        '你好，我是这个站点的 AI 助手。你可以问我站点内容相关问题。'
+      )
+    : siteConfig(
+        'DOCS_CHAT_WELCOME',
+        '你好，我是这个站点的 AI 助手。你可以问我站点内容相关问题。'
+      )
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -39,7 +54,13 @@ export default function DocsChat() {
         body: JSON.stringify({ messages: nextMessages.slice(-6) })
       })
       const data = await response.json()
-      const reply = response.ok ? data.text : data.error
+      const reply = response.ok
+        ? typeof data?.text === 'string'
+          ? data.text
+          : ''
+        : typeof data?.error === 'string'
+          ? data.error
+          : ''
       setMessages([
         ...nextMessages,
         makeMessage('assistant', reply || '请求失败，请稍后再试。')
