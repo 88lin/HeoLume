@@ -295,6 +295,13 @@ img {
   background-size: 300% 100%;
   animation: l1 1s infinite linear;
 }
+
+/* Heo 使用自带的透明 SVG 加载动效，避免叠加全局骨架闪光。 */
+#theme-heo .lazy-image-placeholder {
+  background: transparent;
+  animation: none;
+}
+
 @keyframes l1 {
   0% {
     background-position: right;

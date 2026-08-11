@@ -80,12 +80,13 @@ const BlogPostListScroll = ({
         <div
           className={`${POST_TWO_COLS && 'xl:grid xl:grid-cols-2'} grid-cols-1 gap-5`}>
           {' '}
-          {postsToShow.map(post => (
+          {postsToShow.map((post, index) => (
             <BlogPostCard
               key={post.id}
               post={post}
               showSummary={showSummary}
               siteInfo={siteInfo}
+              priority={index === 0}
             />
           ))}
         </div>

@@ -5,7 +5,7 @@ import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
 import TagItemMini from './TagItemMini'
 
-const BlogPostCard = ({ post, showSummary, siteInfo }) => {
+const BlogPostCard = ({ post, showSummary, siteInfo, priority = false }) => {
   const showPreview =
     siteConfig('HEO_POST_LIST_PREVIEW', null, CONFIG) && post.blockMap
   const cover =
@@ -41,6 +41,7 @@ const BlogPostCard = ({ post, showSummary, siteInfo }) => {
                 ' w-full md:w-5/12 overflow-hidden cursor-pointer select-none'
               }>
               <LazyImage
+                priority={priority}
                 src={cover}
                 alt={post?.title}
                 width={640}
