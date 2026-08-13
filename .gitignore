@@ -52,6 +52,7 @@ output/
 .idea
 .vscode
 .claude/
+.impeccable/
 
 
 # sitemap
