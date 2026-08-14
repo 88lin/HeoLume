@@ -1,14 +1,4 @@
 jest.mock('notion-utils', () => ({
-  idToUuid: id =>
-    `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(
-      16,
-      20
-    )}-${id.slice(20)}`
-}))
-
-import { convertInnerUrl } from '@/lib/db/notion/convertInnerUrl'
-
-jest.mock('notion-utils', () => ({
   idToUuid: jest.fn(id => {
     const compactId = String(id).replace(/-/g, '')
     if (!/^[0-9a-fA-F]{32}$/.test(compactId)) return id
@@ -22,6 +12,8 @@ jest.mock('notion-utils', () => ({
     ].join('-')
   })
 }))
+
+import { convertInnerUrl } from '@/lib/db/notion/convertInnerUrl'
 
 describe('convertInnerUrl', () => {
   beforeEach(() => {
@@ -127,6 +119,59 @@ describe('convertInnerUrl', () => {
     expect(document.querySelector('a.notion-page-link')).toHaveAttribute(
       'href',
       '/article/parent-post/4aea95fb3fd5fcf81846aaaaaaaaaaaa'
+    )
+  })
+
+  it('strips query params before extracting Notion ID', () => {
+    // Notion URLs often include ?pvs=4 which must not break ID extraction
+    document.body.innerHTML = `
+      <div id="notion-article">
+        <a class="notion-link" href="https://www.notion.so/4aea95fb3fd5fcf81846aaaaaaaaaaaa?pvs=4" target="_blank">Links</a>
+      </div>
+    `
+
+    convertInnerUrl({
+      allPages: [
+        {
+          title: 'Links',
+          type: 'Page',
+          href: '/links',
+          slug: 'links',
+          short_id: 'fcf8-1846-aaaaaaaaaaaa'
+        }
+      ],
+      lang: undefined
+    })
+
+    expect(document.querySelector('a.notion-link')).toHaveAttribute(
+      'href',
+      '/links'
+    )
+  })
+
+  it('strips hash fragment before extracting Notion ID', () => {
+    document.body.innerHTML = `
+      <div id="notion-article">
+        <a class="notion-link" href="https://www.notion.so/4aea95fb3fd5fcf81846aaaaaaaaaaaa#section" target="_blank">Links</a>
+      </div>
+    `
+
+    convertInnerUrl({
+      allPages: [
+        {
+          title: 'Links',
+          type: 'Page',
+          href: '/links',
+          slug: 'links',
+          short_id: 'fcf8-1846-aaaaaaaaaaaa'
+        }
+      ],
+      lang: undefined
+    })
+
+    expect(document.querySelector('a.notion-link')).toHaveAttribute(
+      'href',
+      '/links'
     )
   })
 })

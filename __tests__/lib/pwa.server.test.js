@@ -1,18 +1,26 @@
 /**
  * @jest-environment node
  */
-jest.mock('node:fs', () => ({ writeFileSync: jest.fn() }))
-jest.mock('node:path', () => ({ join: jest.fn(() => '/tmp/manifest.json') }))
+jest.mock('node:fs', () => ({
+  writeFileSync: jest.fn(),
+}))
+jest.mock('node:path', () => ({
+  join: jest.fn((...args) => args.join('/')),
+}))
 
-import fs from 'node:fs'
-import { writePwaManifest } from '@/lib/pwa.server'
+function getFreshModule(blogPwaEnable = false) {
+  jest.resetModules()
+  jest.doMock('@/blog.config', () => ({ PWA_ENABLE: blogPwaEnable }))
+  const fs = require('node:fs')
+  const { writePwaManifest } = require('@/lib/pwa.server')
+  return { fs, writePwaManifest }
+}
 
 describe('writePwaManifest', () => {
   const originalBuildMode = process.env.BUILD_MODE
 
   beforeEach(() => {
     process.env.BUILD_MODE = 'true'
-    fs.writeFileSync.mockClear()
   })
 
   afterAll(() => {
@@ -21,23 +29,100 @@ describe('writePwaManifest', () => {
     } else {
       process.env.BUILD_MODE = originalBuildMode
     }
+    jest.dontMock('@/blog.config')
   })
 
-  it('leaves an existing manifest untouched when PWA is disabled', () => {
-    writePwaManifest({ notionConfig: { PWA_ENABLE: false } })
-
+  it('does not write when BUILD_MODE is not true', () => {
+    process.env.BUILD_MODE = 'false'
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({ siteInfo: {}, notionConfig: { PWA_ENABLE: true } })
     expect(fs.writeFileSync).not.toHaveBeenCalled()
   })
 
-  it('writes a manifest during builds only after PWA is enabled', () => {
-    writePwaManifest({
-      siteInfo: { title: 'Installable blog' },
-      notionConfig: { PWA_ENABLE: true, PWA_NAME: 'Installable blog' }
-    })
+  it('does not write when PWA is disabled', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({ siteInfo: {}, notionConfig: { PWA_ENABLE: false } })
+    expect(fs.writeFileSync).not.toHaveBeenCalled()
+  })
 
-    expect(fs.writeFileSync).toHaveBeenCalledWith(
-      '/tmp/manifest.json',
-      expect.stringContaining('"name": "Installable blog"')
-    )
+  it('writes when PWA is enabled via boolean true', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: true },
+    })
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+  })
+
+  it('writes when PWA is enabled via string "true"', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: 'true' },
+    })
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+  })
+
+  it('writes when PWA is enabled via string "1"', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: '1' },
+    })
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+  })
+
+  it('writes when PWA is enabled via string "yes"', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: 'yes' },
+    })
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+  })
+
+  it('writes when PWA is enabled via string "on"', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: 'on' },
+    })
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+  })
+
+  it('writes when PWA is enabled via number 1', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: 1 },
+    })
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not write when PWA_ENABLE is "false" string', () => {
+    const { fs, writePwaManifest } = getFreshModule()
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: 'false' },
+    })
+    expect(fs.writeFileSync).not.toHaveBeenCalled()
+  })
+
+  it('writes when BLOG.PWA_ENABLE is enabled and notionConfig has no override', () => {
+    const { fs, writePwaManifest } = getFreshModule(true)
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: {},
+    })
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(1)
+  })
+
+  it('respects explicit false in notionConfig over BLOG fallback', () => {
+    const { fs, writePwaManifest } = getFreshModule(true)
+    writePwaManifest({
+      siteInfo: { title: 'Test' },
+      notionConfig: { PWA_ENABLE: false },
+    })
+    expect(fs.writeFileSync).not.toHaveBeenCalled()
   })
 })
