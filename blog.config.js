@@ -20,6 +20,17 @@ const BLOG = {
   SEO_BRAND: process.env.NEXT_PUBLIC_SEO_BRAND || '茉灵智库', // SEO标题后缀的短品牌名（与Notion TITLE解耦，避免标题过长）
   KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || '技术教程, 软件资源, 实用工具, 考研资料, 论文下载, 面试题库, 经验分享', // 网站关键词 英文逗号隔开
   BLOG_FAVICON: process.env.NEXT_PUBLIC_FAVICON || '/favicon.svg', // blog favicon 配置, 默认使用 /public/favicon.ico
+  PWA_ENABLE: process.env.NEXT_PUBLIC_PWA_ENABLE || true, // 是否启用 PWA 安装入口；也可在 Notion_Config 中配置 PWA_ENABLE=true
+  PWA_NAME: process.env.NEXT_PUBLIC_PWA_NAME || '茉灵智库', // PWA 安装名称
+  PWA_SHORT_NAME: process.env.NEXT_PUBLIC_PWA_SHORT_NAME || '茉灵智库', // PWA 短名称
+  PWA_DESCRIPTION: process.env.NEXT_PUBLIC_PWA_DESCRIPTION || '分享技术与生活的无限可能✨', // PWA 安装描述
+  PWA_ICON: process.env.NEXT_PUBLIC_PWA_ICON || '/icon-512.png', // PWA 页面图标（apple-touch-icon / favicon 回退）；不控制 manifest 安装图标，manifest 使用内置尺寸合规的 PNG
+  PWA_ICON_192: process.env.NEXT_PUBLIC_PWA_ICON_192 || '', // 可选：覆盖 manifest 192x192 普通图标；须提供真实 192×192 尺寸的资源路径
+  PWA_ICON_512: process.env.NEXT_PUBLIC_PWA_ICON_512 || '', // 可选：覆盖 manifest 512x512 普通图标；须提供真实 512×512 尺寸的资源路径
+  PWA_ICON_192_MASKABLE: process.env.NEXT_PUBLIC_PWA_ICON_192_MASKABLE || '', // 可选：覆盖 manifest 192x192 maskable 图标；资源应留有足够安全边距
+  PWA_ICON_512_MASKABLE: process.env.NEXT_PUBLIC_PWA_ICON_512_MASKABLE || '', // 可选：覆盖 manifest 512x512 maskable 图标；资源应留有足够安全边距
+  PWA_THEME_COLOR: process.env.NEXT_PUBLIC_PWA_THEME_COLOR || '#f7f9fe', // PWA 主题色
+  PWA_BACKGROUND_COLOR: process.env.NEXT_PUBLIC_PWA_BACKGROUND_COLOR || '#fefcf6', // PWA 启动画面背景色
   BEI_AN: process.env.NEXT_PUBLIC_BEI_AN || '萌ICP备20249980号', // 备案号 闽ICP备XXXXXX
   BEI_AN_LINK: process.env.NEXT_PUBLIC_BEI_AN_LINK || 'https://icp.gov.moe/?keyword=20249980', // 备案查询链接，如果用了萌备等备案请在这里填写
   BEI_AN_GONGAN: process.env.NEXT_PUBLIC_BEI_AN_GONGAN || '', // 公安备案号，例如 '浙公网安备3xxxxxxxx8号'
@@ -78,7 +89,11 @@ const BLOG = {
     process.env.NEXT_PUBLIC_GREETING_WORDS_BACK_SPEED || 100,
 
   // uuid重定向至 slug
-  UUID_REDIRECT: process.env.UUID_REDIRECT || false
+  UUID_REDIRECT: process.env.UUID_REDIRECT || false,
+
+  // 内嵌 Notion 子页面 URL 跟随父级文章路径，例如 /article/post/{pageId}
+  INNER_PAGE_URL_PARENT_PATH:
+    process.env.NEXT_PUBLIC_INNER_PAGE_URL_PARENT_PATH || false
 }
 
 module.exports = BLOG

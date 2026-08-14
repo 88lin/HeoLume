@@ -1,5 +1,6 @@
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
+import { getPwaConfig } from '@/lib/pwa'
 import { createSiteUrl, normalizeSiteUrl } from '@/lib/sitemap-utils'
 import { isHttpLink, loadExternalResource } from '@/lib/utils'
 import Head from 'next/head'
@@ -90,7 +91,7 @@ const SEO = props => {
   const category = Array.isArray(meta?.category)
     ? meta.category[0]
     : meta?.category || KEYWORDS
-  const favicon = siteConfig('BLOG_FAVICON')
+  const favicon = siteConfig('BLOG_FAVICON', null, NOTION_CONFIG)
   const BACKGROUND_DARK = siteConfig('BACKGROUND_DARK', '', NOTION_CONFIG)
 
   const SEO_BAIDU_SITE_VERIFICATION = siteConfig(
@@ -105,6 +106,10 @@ const SEO = props => {
     NOTION_CONFIG
   )
 
+  const pwaEnabled = siteConfig('PWA_ENABLE', false, NOTION_CONFIG)
+  const pwaConfig = pwaEnabled
+    ? getPwaConfig({ siteInfo, notionConfig: NOTION_CONFIG })
+    : null
   const COMMENT_WEBMENTION_ENABLE = siteConfig(
     'COMMENT_WEBMENTION_ENABLE',
     null,
@@ -147,9 +152,15 @@ const SEO = props => {
       <meta charSet='UTF-8' />
       <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       <link rel='icon' href={favicon} />
-      <link rel='apple-touch-icon' href={favicon} />
+      <link
+        rel='apple-touch-icon'
+        href={pwaEnabled && pwaConfig ? pwaConfig.icon : favicon}
+      />
       <title>{title}</title>
-      <meta name='theme-color' content={BACKGROUND_DARK} />
+      <meta
+        name='theme-color'
+        content={pwaEnabled && pwaConfig ? pwaConfig.themeColor : BACKGROUND_DARK}
+      />
       <meta name='robots' content={robots} />
       {robots.startsWith('index') && (
         <link rel='canonical' href={canonicalUrl} />
@@ -159,6 +170,12 @@ const SEO = props => {
       <meta name='apple-mobile-web-app-capable' content='yes' />
       <meta name='apple-mobile-web-app-status-bar-style' content='default' />
       <meta name='apple-mobile-web-app-title' content={title} />
+      {pwaEnabled && (
+        <>
+          <link rel='manifest' href='/manifest.json' />
+          <meta name='application-name' content={pwaConfig?.name} />
+        </>
+      )}
 
       {/* 搜索引擎验证 */}
       {SEO_GOOGLE_SITE_VERIFICATION && (

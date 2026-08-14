@@ -25,9 +25,15 @@ const ExternalPluginEnabled = props => {
   const { lang, theme } = useGlobal()
   const [pluginsIdle, setPluginsIdle] = useState(false)
   const [hasAosElements, setHasAosElements] = useState(false)
+  const innerLinkPages = props?.allLinkPages || props?.allNavPages
   const DISABLE_PLUGIN = siteConfig('DISABLE_PLUGIN', null, NOTION_CONFIG)
   const THEME_SWITCH = siteConfig('THEME_SWITCH', null, NOTION_CONFIG)
   const DEBUG = siteConfig('DEBUG', null, NOTION_CONFIG)
+  const INNER_PAGE_URL_PARENT_PATH = siteConfig(
+    'INNER_PAGE_URL_PARENT_PATH',
+    null,
+    NOTION_CONFIG
+  )
   const ANALYTICS_ACKEE_TRACKER = siteConfig(
     'ANALYTICS_ACKEE_TRACKER',
     null,
@@ -256,15 +262,21 @@ const ExternalPluginEnabled = props => {
     const urlTimer = setTimeout(() => {
       // 映射url
       convertInnerUrl({
-        allPages: props?.allLinkPages || props?.allNavPages,
-        lang: lang
+        allPages: innerLinkPages,
+        lang: lang,
+        innerPageUrlParentPath: INNER_PAGE_URL_PARENT_PATH
       })
     }, 500)
-
     return () => {
       clearTimeout(urlTimer)
     }
-  }, [DISABLE_PLUGIN, routePath, props?.allLinkPages, props?.allNavPages, lang])
+  }, [
+    DISABLE_PLUGIN,
+    INNER_PAGE_URL_PARENT_PATH,
+    innerLinkPages,
+    lang,
+    routePath
+  ])
 
   useEffect(() => {
     if (DISABLE_PLUGIN || !isBrowser || !GLOBAL_JS || GLOBAL_JS.trim() === '') {
