@@ -455,6 +455,17 @@ const nextConfig = {
     ]
 
     // 动态主题：添加 resolve.alias 配置，将动态路径映射到实际路径
+    config.resolve.alias['notionnext-theme-registry'] = path.resolve(
+      __dirname,
+      'themes',
+      isServer ? 'themeRegistry.server.js' : 'themeRegistry.js'
+    )
+    const defaultTheme = String(BLOG.THEME || '')
+      .split(',')[0]
+      .trim()
+    config.resolve.alias['notionnext-default-theme'] = isServer
+      ? path.resolve(__dirname, 'themes', defaultTheme, 'index.js')
+      : path.resolve(__dirname, 'themes', 'themeRegistry.js')
     config.resolve.alias['@'] = path.resolve(__dirname)
     config.resolve.alias['lodash.throttle'] = path.resolve(
       __dirname,
@@ -466,7 +477,7 @@ const nextConfig = {
         '[ThemeResolver][webpack]',
         JSON.stringify({
           note:
-            'Layouts load via dynamic import(@/themes/<name>). Theme folder follows runtime NEXT_PUBLIC_THEME / Notion; no compile-time @theme-components alias.',
+            'Browser layouts load dynamically; server rendering statically imports the default theme.',
           envTheme: process.env.NEXT_PUBLIC_THEME || null,
           configTheme: BLOG.THEME,
           themeFolderPath: path.resolve(__dirname, 'themes', BLOG.THEME)

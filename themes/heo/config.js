@@ -171,7 +171,7 @@ const CONFIG = {
   HEO_WIDGET_ANALYTICS: true, // 显示统计卡
   HEO_WIDGET_TO_TOP: true,
   HEO_LENIS_ENABLE: true, // 启用 Lenis 惯性滚动效果
-  HEO_ENABLE_AOS: false // heo主题是否启用AOS滚动动画
+  HEO_ENABLE_AOS: true // heo主题是否启用AOS滚动动画
 }
 
 if (

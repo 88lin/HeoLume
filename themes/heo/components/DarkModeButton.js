@@ -1,5 +1,5 @@
 import { useGlobal } from '@/lib/global'
-import { saveDarkModeToLocalStorage } from '@/themes/theme'
+import { saveDarkModeToLocalStorage } from '@/themes/themeConfig'
 import { Moon, Sun } from '@/components/HeroIcons'
 import { useImperativeHandle } from 'react'
 
