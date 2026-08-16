@@ -120,7 +120,7 @@ const SocialButton = () => {
             rel='noreferrer'
             title={'ORCID'}
             href={CONTACT_ORCID}>
-            <i className={`${iconClass} fab fa-orcid`} />
+            <i className='transform hover:scale-125 duration-150 fab fa-orcid dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
         {CONTACT_TWITTER && (

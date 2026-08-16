@@ -32,7 +32,7 @@ const BlogPostListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
               key={post.id}
               post={post}
               siteInfo={siteInfo}
-              priority={page === 1 && index === 0}
+              priority={page === 1 && index < 2}
             />
           ))}
         </div>

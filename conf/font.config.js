@@ -13,7 +13,6 @@ module.exports = {
     : [
         'https://cdn.jsdmirror.com/npm/lxgw-wenkai-webfont@1.7.0/style.min.css',
         'https://fonts.googleapis.com/css?family=Bitter&display=swap', // Bitter 用作英文数字的字体
-        'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap',
         'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300&display=swap'
       ],
 
@@ -31,7 +30,7 @@ module.exports = {
     '"Microsoft YaHei"',
     '"Microsoft YaHei UI"',
     '"HarmonyOS Sans"',
-    'HarmonyOS_Regular',
+    '"HarmonyOS Sans SC"',
     '"LXGW WenKai"',
     '"Noto Sans SC"',
     '"Source Han Sans SC"',
