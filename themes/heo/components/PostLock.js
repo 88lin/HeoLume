@@ -35,7 +35,7 @@ export const PostLock = props => {
     <div
       id='container'
       className='w-full flex justify-center items-center h-96 '>
-      <div className='text-center space-y-3'>
+      <div className='w-72 max-w-full text-center space-y-3'>
         <div className='font-bold dark:text-gray-300 text-black'>
           {locale.COMMON.ARTICLE_LOCK_TIPS}
         </div>
