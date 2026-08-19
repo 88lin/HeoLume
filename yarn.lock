@@ -16,27 +16,27 @@
     "@ai-sdk/provider-utils" "5.0.7"
     "@vercel/oidc" "3.2.0"
 
-"@ai-sdk/gateway@4.0.46":
-  version "4.0.46"
-  resolved "https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-4.0.46.tgz#47be423d62be65e8755de94e5aaa184ef57998c4"
-  integrity sha512-LIAO6kAG8fpXQb9L0iwPk1FIbXftvqnyC56v5NEAzeWTeL8fUsy/Hx86VPBTWEDFdwbVprjWifJOAqS6AOj3mA==
+"@ai-sdk/gateway@4.0.54":
+  version "4.0.54"
+  resolved "https://registry.npmjs.org/@ai-sdk/gateway/-/gateway-4.0.54.tgz#50415e102b1de6c7e99abe120e2a4466a76d628f"
+  integrity sha512-x4fAXDqCtYzB/M5vsIQLYcyrzpJuaRgcIwDSw+lpTMMbgH19fU3ds75GSlHNLzfx6Z5yL4Z9+EMr0GJcqVy9QA==
   dependencies:
     "@ai-sdk/provider" "4.0.7"
-    "@ai-sdk/provider-utils" "5.0.25"
+    "@ai-sdk/provider-utils" "5.0.27"
     "@vercel/oidc" "3.2.0"
 
-"@ai-sdk/google@^4.0.37":
-  version "4.0.39"
-  resolved "https://registry.npmjs.org/@ai-sdk/google/-/google-4.0.39.tgz#6ecaaaa7244754fc0ab662fbb3236da03e26e331"
-  integrity sha512-+mRx7UBZn9PkJ4J6YXowaRZKMZYa290cknVqqOw/roZaDg186IUOLn9JHNQkvgaj91/MLW1AZNESy1ZD2yXDCg==
+"@ai-sdk/google@^4.0.44":
+  version "4.0.45"
+  resolved "https://registry.npmjs.org/@ai-sdk/google/-/google-4.0.45.tgz#eb8098d294e0e5c90a4654b6d6cc5e58549654da"
+  integrity sha512-1oLHhc2twSQzm7O8j/HaRWLfBh+tPjQP55d8yXmrZvvopoH6/P7WaDznVJqjouGSof429lR+tYdINkjvUl+8Qg==
   dependencies:
     "@ai-sdk/provider" "4.0.7"
-    "@ai-sdk/provider-utils" "5.0.25"
+    "@ai-sdk/provider-utils" "5.0.27"
 
-"@ai-sdk/provider-utils@5.0.25":
-  version "5.0.25"
-  resolved "https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-5.0.25.tgz#48e3cf76dd78757217be387abcd89b608b7522e1"
-  integrity sha512-xscPPHCSjCHWrdhai25sbHCJeKNLW/3D1uSpUZa4cEtTKXA8OnPQ3+Rfu1SmM5Ea/Mf8Dfn3cllw9zeMzo/zFA==
+"@ai-sdk/provider-utils@5.0.27":
+  version "5.0.27"
+  resolved "https://registry.npmjs.org/@ai-sdk/provider-utils/-/provider-utils-5.0.27.tgz#8f7763b392b181df56a13fa9c0114650f1c6e64b"
+  integrity sha512-EzAn4pdgG5g0xXtH6lE2zyNmfjDQIDjATkfqzuidEI35g++hh4+07vnjzkT/RmGmIClPZiRj/Q2GMPV2V7mkHw==
   dependencies:
     "@ai-sdk/provider" "4.0.7"
     "@standard-schema/spec" "^1.1.0"
@@ -68,13 +68,13 @@
   dependencies:
     json-schema "^0.4.0"
 
-"@ai-sdk/vue@^4.0.56":
-  version "4.0.58"
-  resolved "https://registry.npmjs.org/@ai-sdk/vue/-/vue-4.0.58.tgz#fcb77009a833c76463cd23dd057e2cb60eb83f3e"
-  integrity sha512-cfEA2EeGd4nVOliO2r9u0lKFgO6+GXm858eOko4ptOexbRg8u1yPbY9nrIFWRWAhYPjUzUMWw42zW6MDuxmrGw==
+"@ai-sdk/vue@^4.0.65":
+  version "4.0.68"
+  resolved "https://registry.npmjs.org/@ai-sdk/vue/-/vue-4.0.68.tgz#3caccae9436971b95799dd1466727a7d0e845916"
+  integrity sha512-L72N4+rJKSEG0jX9TT0qkP13rFp6/q9M4G76XuBH1BAZgmtsnvyOhuwwnxxJOiEpkMp7IyogIw7PEcJNA7+LBw==
   dependencies:
-    "@ai-sdk/provider-utils" "5.0.25"
-    ai "7.0.58"
+    "@ai-sdk/provider-utils" "5.0.27"
+    ai "7.0.68"
     swrv "^1.2.0"
 
 "@algolia/abtesting@1.18.1":
@@ -2056,17 +2056,17 @@
   resolved "https://registry.npmjs.org/@standard-schema/spec/-/spec-1.1.0.tgz#a79b55dbaf8604812f52d140b2c9ab41bc150bb8"
   integrity sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==
 
-"@supabase/auth-js@2.112.2":
-  version "2.112.2"
-  resolved "https://registry.npmjs.org/@supabase/auth-js/-/auth-js-2.112.2.tgz#bf6137c3974de4f1bbdf31e82b808d04a47d6e77"
-  integrity sha512-l1InCp4j98d09LZ6+RgubgF4eVPGBGXcLEhFusLg1qUCHJ2IEkYu5FohKK+eaFmIOwEk0kqG/j/lycw5e15mcQ==
+"@supabase/auth-js@2.112.3":
+  version "2.112.3"
+  resolved "https://registry.npmjs.org/@supabase/auth-js/-/auth-js-2.112.3.tgz#a199658869af128052f1df737986b432bf44505b"
+  integrity sha512-NA0rsgAlWZPvbhw8aUdmgfpHVgUAcd8zK5ov43l++o1bLIPXZhRiAlRobhwF5AatQuovpqxsMH50F4oyyV4XZw==
   dependencies:
     tslib "2.8.1"
 
-"@supabase/functions-js@2.112.2":
-  version "2.112.2"
-  resolved "https://registry.npmjs.org/@supabase/functions-js/-/functions-js-2.112.2.tgz#415c16b15a09bf0147c520096e55254f28935110"
-  integrity sha512-oMuSWN0ERmrG9S6kOM0bwhHmESGVl3kMtkZl2dNCU/r89hMiziX4GfD1omNo9QcBDele4N0GwSZ7hdbpuiA35A==
+"@supabase/functions-js@2.112.3":
+  version "2.112.3"
+  resolved "https://registry.npmjs.org/@supabase/functions-js/-/functions-js-2.112.3.tgz#dcadb54b74314086f2f186ccea5ae2c276560f3e"
+  integrity sha512-gfv481mTOVWtZIJgXupxZpni2V2UWPf6jeF/jOK7HdMHdH+mt6sU0sHHwf0POsPip8ltlulu9OUHgwVzl5ddRw==
   dependencies:
     tslib "2.8.1"
 
@@ -2075,39 +2075,39 @@
   resolved "https://registry.npmjs.org/@supabase/phoenix/-/phoenix-0.4.5.tgz#28f6a0dc020f53f171899b9c6021eecfe2a112d1"
   integrity sha512-aAn9H9ovVyeApKy11OWOrrOGq8DV68yWeH4ud2lN9fzn4aO8Zb5GLL9m1pUg9nLqIcT+ZDfAcsZe0E/nqdv2lw==
 
-"@supabase/postgrest-js@2.112.2":
-  version "2.112.2"
-  resolved "https://registry.npmjs.org/@supabase/postgrest-js/-/postgrest-js-2.112.2.tgz#d8b1bdabdf58d3ff08f0d458a978f2e3ff2c3d4e"
-  integrity sha512-ewhhtRny/HFRGhUTTg/PsqIatsl8OhW8Eha/Tz4S+SRAXBnuhKei9ZpsQTgL/3XcH9UEwuPQyQgQ9itq7nRQeg==
+"@supabase/postgrest-js@2.112.3":
+  version "2.112.3"
+  resolved "https://registry.npmjs.org/@supabase/postgrest-js/-/postgrest-js-2.112.3.tgz#2ab2ee1d118b4c37798ec3f78fd0267c771920ae"
+  integrity sha512-+Mf6uCpzr00bqxwX8hTK2X2L9eAL/1vuOjdEjx6upz9ulb0RmQT16XeU/JkMUlVHw/B46ZnPa2busY4Kd9YCzw==
   dependencies:
     tslib "2.8.1"
 
-"@supabase/realtime-js@2.112.2":
-  version "2.112.2"
-  resolved "https://registry.npmjs.org/@supabase/realtime-js/-/realtime-js-2.112.2.tgz#c8a450a16d4a0a05aecf89bf309b4808379b1e3c"
-  integrity sha512-cd9/CEUJ6Go13FxtfiuC5rYELJtuQzVzTXlGG+XjSppjDS+anq+xo++WQe7ZRUNTuHOCeyKRwmx9Hw/OQJ04ig==
+"@supabase/realtime-js@2.112.3":
+  version "2.112.3"
+  resolved "https://registry.npmjs.org/@supabase/realtime-js/-/realtime-js-2.112.3.tgz#09bdda73e88dfc76212e4fc116890c9de607cc1a"
+  integrity sha512-E6wljXWs7DUOloyIB69i3YFInWE6IyCvgTAbQ0KYxOHv26FdA1KzEXTuzxrYEdf70t406Z9BRwUlGyclGF2FXA==
   dependencies:
     "@supabase/phoenix" "0.4.5"
     tslib "2.8.1"
 
-"@supabase/storage-js@2.112.2":
-  version "2.112.2"
-  resolved "https://registry.npmjs.org/@supabase/storage-js/-/storage-js-2.112.2.tgz#6b4b2dcf5e170f57411cd336a70a3ea4f5012b20"
-  integrity sha512-6jyBq/J1iXOHNpbjCZS7gFcDk49iM1MCJUVkDl71gLd/+XnLDzpUBs8icGebtwiHpl4kVszxIRDYAosbF4Rsig==
+"@supabase/storage-js@2.112.3":
+  version "2.112.3"
+  resolved "https://registry.npmjs.org/@supabase/storage-js/-/storage-js-2.112.3.tgz#824b595b1304cf069fb09ae56b05e24d213e30de"
+  integrity sha512-oSK61tzlUvg+BWPqpKQCu9qqonsO26btaoAR9D6Gest2aj7xUqToj9rKyaoYOJczkhg9BjqA1REbYy9tPI4bDA==
   dependencies:
     iceberg-js "^0.8.1"
     tslib "2.8.1"
 
-"@supabase/supabase-js@^2.112.2":
-  version "2.112.2"
-  resolved "https://registry.npmjs.org/@supabase/supabase-js/-/supabase-js-2.112.2.tgz#1a5d18bbacaaef3fe5fe279f256c1c15b3b0fd5e"
-  integrity sha512-UyI1epU9B4X51HvNpkmlwTdF20fEcz2vyvrcDKVzFN4jZN41f5iQRqsiIQjAY5OVJD6ljqA/1g9JQeOTvFHpkA==
+"@supabase/supabase-js@^2.112.3":
+  version "2.112.3"
+  resolved "https://registry.npmjs.org/@supabase/supabase-js/-/supabase-js-2.112.3.tgz#4b5b25ab607ecb59cba09b073cf8f3f19e6b62c9"
+  integrity sha512-Jv1bxVQmEJNkjvPEhFaKjPzsh+Ozyew6lWGD+SoYcsclDEP1z7yEvKvfUQfzy0DkxRIQnZNxmmWtAzw5XLTQoA==
   dependencies:
-    "@supabase/auth-js" "2.112.2"
-    "@supabase/functions-js" "2.112.2"
-    "@supabase/postgrest-js" "2.112.2"
-    "@supabase/realtime-js" "2.112.2"
-    "@supabase/storage-js" "2.112.2"
+    "@supabase/auth-js" "2.112.3"
+    "@supabase/functions-js" "2.112.3"
+    "@supabase/postgrest-js" "2.112.3"
+    "@supabase/realtime-js" "2.112.3"
+    "@supabase/storage-js" "2.112.3"
 
 "@swc/helpers@0.5.15":
   version "0.5.15"
@@ -2175,10 +2175,10 @@
     "@testing-library/dom" "^9.0.0"
     "@types/react-dom" "^18.0.0"
 
-"@testing-library/user-event@^14.6.3":
-  version "14.6.3"
-  resolved "https://registry.npmjs.org/@testing-library/user-event/-/user-event-14.6.3.tgz#360bd2e2f496ba738dfd59f114368dc479199a7f"
-  integrity sha512-6dBq67jT8lE+JTE8Exm02Kt6ze43hz1jdiSpSJwtTZiT1xQQ6b7nZYTTQ9njdArdU8XklOwaDp/AbT/eYSKF4g==
+"@testing-library/user-event@^14.6.4":
+  version "14.6.5"
+  resolved "https://registry.npmjs.org/@testing-library/user-event/-/user-event-14.6.5.tgz#175a580580349d4452b6a604001e65833de281f8"
+  integrity sha512-FhqjldLTpteueBaKflhNFlMT3+PM0O5fiBUivht6b9CZ1eesJyy7+g3Jr7XwJzt/Hip3ZG5hWwK1MX1FuDiE4w==
 
 "@tootallnate/once@2":
   version "2.0.0"
@@ -2526,10 +2526,10 @@
   resolved "https://registry.npmjs.org/@vercel/analytics/-/analytics-1.6.1.tgz#b4e16daf445cf6cd365a91e43d86e9e5b3428ddc"
   integrity sha512-oH9He/bEM+6oKlv3chWuOOcp8Y6fo6/PSro8hEkgCW3pu9/OiCXiUpRUogDh3Fs3LH2sosDrx8CxeOLBEE+afg==
 
-"@vercel/cli-config@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.npmjs.org/@vercel/cli-config/-/cli-config-0.2.2.tgz#2e146af1056f05bba1ce6f5284552a4dd3950260"
-  integrity sha512-kAy35eymNzRBfmcqEViVQge0KJ59FYEKsPqGNCSJQ7M9HTuFGWd3qPcZos1A5cZpAWRBdiYe82Bcz9P7pIZvUQ==
+"@vercel/cli-config@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/@vercel/cli-config/-/cli-config-0.2.3.tgz#617881e9de809f70edc48905d09014633541bd9e"
+  integrity sha512-Ggh0Wmi92TUkUexmSUPkkDtvJmbjUr7IvF5T3FkSsWrXXs3GFzOujfxFpECdJZpux1JG4SWDv9BT4w++TDgD6A==
   dependencies:
     xdg-app-paths "5"
     zod "4.1.11"
@@ -2541,24 +2541,24 @@
   dependencies:
     execa "5.1.1"
 
-"@vercel/functions@^3.8.0":
-  version "3.9.1"
-  resolved "https://registry.npmjs.org/@vercel/functions/-/functions-3.9.1.tgz#8aadd653e1f0892cbeaeafa60ee9793c0b7dbc7d"
-  integrity sha512-RhrIZvQ0Jfgeq0pCaeZ/E19OujpGEyB2BDO//6F91Z8VC5JJ5H4ckLLswaKnM7vOutRswU/MO6UQMGhtm7fA/Q==
+"@vercel/functions@^3.9.3":
+  version "3.9.3"
+  resolved "https://registry.npmjs.org/@vercel/functions/-/functions-3.9.3.tgz#2bdfc128874c135ce85fbef18dc980d21d1c3958"
+  integrity sha512-cbzTdASCZDnufrABc8oO00e/FqlqFFSdld+iGZPhrWBDHP4Pu8ESKKYIzASqYvbYYUIWujBvEa5LLCcZzm7WEw==
   dependencies:
-    "@vercel/oidc" "3.8.2"
+    "@vercel/oidc" "3.8.4"
 
 "@vercel/oidc@3.2.0":
   version "3.2.0"
   resolved "https://registry.npmjs.org/@vercel/oidc/-/oidc-3.2.0.tgz#5782a4d4904443f015808705b5537cf9c3b68528"
   integrity sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug==
 
-"@vercel/oidc@3.8.2":
-  version "3.8.2"
-  resolved "https://registry.npmjs.org/@vercel/oidc/-/oidc-3.8.2.tgz#116b182bdae8e794f0c5ed89b784d5507fa7e861"
-  integrity sha512-nmVSeQ7tewCkqYBNB/MNL8aPB9sTvtjvqIE6+U17U4IuTyehuWVERDlWrSn0DVfiFAstRlRkGLHBlKHB2FyzbQ==
+"@vercel/oidc@3.8.4":
+  version "3.8.4"
+  resolved "https://registry.npmjs.org/@vercel/oidc/-/oidc-3.8.4.tgz#6598e8ac639047b0a209bc36737a4ef78f9f3572"
+  integrity sha512-FGNvVZ5pgX9FaBqkPt6VkYFZ6bWAMDzYi7nxW+1Xt+Z4fn5PuTULVwsxjKc+0uKhysyWBQmvsmM50Oh6C2/oMA==
   dependencies:
-    "@vercel/cli-config" "0.2.2"
+    "@vercel/cli-config" "0.2.3"
     "@vercel/cli-exec" "1.0.1"
     jose "^5.9.6"
 
@@ -2883,14 +2883,14 @@ agent-base@^7.1.0, agent-base@^7.1.2:
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-7.1.4.tgz#e3cd76d4c548ee895d3c3fd8dc1f6c5b9032e7a8"
   integrity sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==
 
-ai@7.0.58:
-  version "7.0.58"
-  resolved "https://registry.npmjs.org/ai/-/ai-7.0.58.tgz#95dffd740002e28a4d9c82313bbb9c85c8d690cb"
-  integrity sha512-GfgO90CQQ0yYuoxJAUOeQ6tviyYw1BUIDygSZ1q3Ce6kSc93tYmB5eltKY/NxC0YOouAax7JvDqVnYxvIAr04Q==
+ai@7.0.68:
+  version "7.0.68"
+  resolved "https://registry.npmjs.org/ai/-/ai-7.0.68.tgz#8dfce0f0ae2b549b0c7ca317eac73add44cb981b"
+  integrity sha512-9QuZOT77wzoxxUC0NcueXhCo3HUHA/1pApIJ9VRyE+9/K+3Innkq4kVhrd9aEnwIviJz2Nga063m+UTsPSdOyw==
   dependencies:
-    "@ai-sdk/gateway" "4.0.46"
+    "@ai-sdk/gateway" "4.0.54"
     "@ai-sdk/provider" "4.0.7"
-    "@ai-sdk/provider-utils" "5.0.25"
+    "@ai-sdk/provider-utils" "5.0.27"
 
 ai@^7.0.19:
   version "7.0.22"
@@ -4158,9 +4158,9 @@ dequal@2.0.3, dequal@^2.0.0, dequal@^2.0.3:
   resolved "https://registry.npmjs.org/dequal/-/dequal-2.0.3.tgz#2644214f1997d39ed0ee0ece72335490a7ac67be"
   integrity sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==
 
-destr@^2.0.3:
+destr@^2.0.5:
   version "2.0.5"
-  resolved "https://registry.npmjs.org/destr/-/destr-2.0.5.tgz"
+  resolved "https://registry.npmjs.org/destr/-/destr-2.0.5.tgz#7d112ff1b925fb8d2079fac5bdb4a90973b51fdb"
   integrity sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==
 
 destroy@1.2.0, destroy@~1.2.0:
@@ -5475,10 +5475,10 @@ hast-util-whitespace@^3.0.0:
   dependencies:
     "@types/hast" "^3.0.0"
 
-highlight.js@^11.11.1:
-  version "11.11.1"
-  resolved "https://registry.npmjs.org/highlight.js/-/highlight.js-11.11.1.tgz#fca06fa0e5aeecf6c4d437239135fabc15213585"
-  integrity sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w==
+highlight.js@^11.12.0:
+  version "11.12.0"
+  resolved "https://registry.npmjs.org/highlight.js/-/highlight.js-11.12.0.tgz#470d918fd556a76debc40fe5e4b540b6b9cb9890"
+  integrity sha512-nbfWpyRMcMrPMmDwJB+dhX/eiaPKtc2RB+0QZskqJ3WjRA/FDS0e9hZrx8EC/lbEv8gXy98FcDbNa/dspAaJMg==
 
 hookable@^5.5.3:
   version "5.5.3"
@@ -7215,9 +7215,9 @@ node-addon-api@^7.0.0:
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz"
   integrity sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==
 
-node-fetch-native@^1.6.4:
+node-fetch-native@^1.6.7:
   version "1.6.7"
-  resolved "https://registry.npmjs.org/node-fetch-native/-/node-fetch-native-1.6.7.tgz"
+  resolved "https://registry.npmjs.org/node-fetch-native/-/node-fetch-native-1.6.7.tgz#9d09ca63066cc48423211ed4caf5d70075d76a71"
   integrity sha512-g9yhqoedzIUm0nTnTqAQvueMPVOuIY16bqgAJJC8XOOubYFNwz6IER9qs0Gq2Xd0+CecCKFjtdDTMA4u4xG06Q==
 
 node-fetch@^2.6.1:
@@ -7252,30 +7252,46 @@ normalize-url@^8.0.1:
   resolved "https://registry.npmmirror.com/normalize-url/-/normalize-url-8.0.1.tgz"
   integrity sha512-IO9QvjUMWxPQQhs60oOu10CRkWCiZzSUkzbXGGV9pviYl1fXYcvkzQ5jV9z8Y6un8ARoVRl4EtC6v6jNqbaJ/w==
 
-notion-client@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/notion-client/-/notion-client-7.10.0.tgz"
-  integrity sha512-Rb4/nR4vIRwIExvKiVhZKJEpGoE0IRFlHMKbs0tcZcecZaUVRzVAu7PHuaHC5ivSds26z497dxXYF3mnMrMt7g==
+notion-client@7.12.0:
+  version "7.12.0"
+  resolved "https://registry.npmjs.org/notion-client/-/notion-client-7.12.0.tgz#0d4ba82e30e3d54364d66766422d1e96534a4bd9"
+  integrity sha512-Oxqt3DBPLNWDU6PMtErAUQC2sgCUu45BdzrF80tdwN8i2uYo+fMksuOaXhdLV0k38YnC21QQ0DXBlItgWQVHgQ==
   dependencies:
-    notion-types "7.10.0"
-    notion-utils "7.10.0"
-    ofetch "^1.4.1"
-    p-map "^7.0.3"
+    notion-types "7.12.0"
+    notion-utils "7.12.0"
+    ofetch "^1.5.1"
+    p-map "^7.0.4"
 
-notion-types@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/notion-types/-/notion-types-7.10.0.tgz"
-  integrity sha512-t57RdnGnup7NcMGJkrlshe3gXaFYOj565NL1Q1l/MrZZ/K2xbHO06PtBXDEFTFYjvxQagU0NzKzaSNKocU9e4Q==
+notion-types@7.11.1:
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/notion-types/-/notion-types-7.11.1.tgz#2db827a4d8d65bbd5837ee495243d915b745ca24"
+  integrity sha512-uL16vyo9uFBa5rnI6tJB45+Zc2Z0OPJIK+9fu3kNOKEk7vnjFYXAxgBph71E3JHESntUgaeT/CSRdpERp7DQvw==
 
-notion-utils@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/notion-utils/-/notion-utils-7.10.0.tgz"
-  integrity sha512-Z/L+xOzVWM5wBHOqLu3PwCzA/11yzVExMpR8FUcwHbS60DDULSgZgipXQBzKOlbQMnB+04BOkSGDNan+AxfxmA==
+notion-types@7.12.0:
+  version "7.12.0"
+  resolved "https://registry.npmjs.org/notion-types/-/notion-types-7.12.0.tgz#3bac5b3d51f6e156d9c937ab6a6396937bd8a11f"
+  integrity sha512-dQr4jyI5WI9uCys0K8FBISH4buVNpwr2MundLGY1suX9SryqPxD15WQYa0Z6DVaUTIIwTEjx8WtgAs82b0ZpPg==
+
+notion-utils@7.11.1:
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/notion-utils/-/notion-utils-7.11.1.tgz#988aceda2c4826dd4ce8df1b7e0510b7e4a7770a"
+  integrity sha512-gKj7nrHOKdllpYQTIB3ENIXOoLfwtyE4hdZPuzUgTl8BjQhyqZtYa2q+yDWvOmhkcOkiygGS1DgLNPJDcyxg2A==
   dependencies:
     is-url-superb "^6.1.0"
     memoize "^10.1.0"
     normalize-url "^8.0.1"
-    notion-types "7.10.0"
+    notion-types "7.11.1"
+    p-queue "^8.1.0"
+
+notion-utils@7.12.0:
+  version "7.12.0"
+  resolved "https://registry.npmjs.org/notion-utils/-/notion-utils-7.12.0.tgz#1624c394ddc7245ce45718541fba04afee652e27"
+  integrity sha512-oFTojJ//jHT9EW9h75+XU9Yn4dY96La9YfoC2Dl+swntqbfuIpSLflLYKhoWPeiucEr4LocbFhnb1yBNWE1UKg==
+  dependencies:
+    is-url-superb "^6.1.0"
+    memoize "^10.1.0"
+    normalize-url "^8.0.1"
+    notion-types "7.12.0"
     p-queue "^8.1.0"
 
 npm-run-path@^4.0.1:
@@ -7376,14 +7392,14 @@ object.values@^1.1.6, object.values@^1.2.1:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-ofetch@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/ofetch/-/ofetch-1.4.1.tgz"
-  integrity sha512-QZj2DfGplQAr2oj9KzceK9Hwz6Whxazmn85yYeVuS3u9XTMOGMRx0kO95MQ+vLsj/S/NwBDMMLU5hpxvI6Tklw==
+ofetch@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.npmjs.org/ofetch/-/ofetch-1.5.1.tgz#5c43cc56e03398b273014957060344254505c5c7"
+  integrity sha512-2W4oUZlVaqAPAil6FUg/difl6YhqhUR7x2eZY4bQCko22UXg3hptq9KLQdqFClV+Wu85UX7hNtdGTngi/1BxcA==
   dependencies:
-    destr "^2.0.3"
-    node-fetch-native "^1.6.4"
-    ufo "^1.5.4"
+    destr "^2.0.5"
+    node-fetch-native "^1.6.7"
+    ufo "^1.6.1"
 
 on-finished@~2.4.1:
   version "2.4.1"
@@ -7510,10 +7526,10 @@ p-locate@^5.0.0:
   dependencies:
     p-limit "^3.0.2"
 
-p-map@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.npmmirror.com/p-map/-/p-map-7.0.3.tgz"
-  integrity sha512-VkndIv2fIB99swvQoA65bm+fsmt6UNdGeIB0oxBs+WhAhdh08QA04JXpI7rbB9r08/nkbysKoya9rtDERYOYMA==
+p-map@^7.0.4:
+  version "7.0.6"
+  resolved "https://registry.npmjs.org/p-map/-/p-map-7.0.6.tgz#5b6ee7f1a775faa48599c8d4420f6a39833cd387"
+  integrity sha512-I4Prw6ivkd6p8PiYR1tXASOAOBzIJwu0TB7fqaX0c/8c3QAehNYmX57EijyGGGBt3c/BIowGwV03RVBtXvHEVg==
 
 p-queue@^8.1.0:
   version "8.1.0"
@@ -8054,16 +8070,16 @@ react-modal@^3.16.3:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
-react-notion-x@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/react-notion-x/-/react-notion-x-7.10.0.tgz"
-  integrity sha512-i5FZKruMoRESnx5Lqq1kTp8a/eseErQ3Ph93dKCoCeRRN9hnPGCxUdnu/wsBp5h2BHMqswRujDiclqZvoQE2IA==
+react-notion-x@7.11.1:
+  version "7.11.1"
+  resolved "https://registry.npmjs.org/react-notion-x/-/react-notion-x-7.11.1.tgz#ff2d7a32ea2f5f45158aadedb7c7f2d69a1f2436"
+  integrity sha512-6poTOXhDW1pZXmhd/I2Er1aFwYZyWaCn6cm/q2TNQeBm3zdvVr37KFQfc0m0hH9eo+rUCwwDMsMsaHqrb3ma5w==
   dependencies:
     "@fisch0920/medium-zoom" "^1.0.7"
     "@matejmazur/react-katex" "^3.1.3"
     katex "0.16.21"
-    notion-types "7.10.0"
-    notion-utils "7.10.0"
+    notion-types "7.11.1"
+    notion-utils "7.11.1"
     prismjs "^1.30.0"
     react-fast-compare "^3.2.0"
     react-hotkeys-hook "^4.5.1"
@@ -9475,10 +9491,10 @@ typescript@5.9.3:
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz#5b4f59e15310ab17a216f5d6cf53ee476ede670f"
   integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
 
-ufo@^1.5.4:
-  version "1.6.1"
-  resolved "https://registry.npmjs.org/ufo/-/ufo-1.6.1.tgz"
-  integrity sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==
+ufo@^1.6.1:
+  version "1.6.4"
+  resolved "https://registry.npmjs.org/ufo/-/ufo-1.6.4.tgz#7a8fb875fcc6382d2c7d0b3692738b0500a92467"
+  integrity sha512-JFNbkD1Svwe0KvGi8GOeLcP4kAWQ609twvCdcHxq1oSL8svv39ZuSvajcD8B+5D0eL4+s1Is2D/O6KN3qcTeRA==
 
 unbox-primitive@^1.1.0:
   version "1.1.0"
