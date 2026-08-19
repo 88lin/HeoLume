@@ -28,21 +28,23 @@ const Lenis = () => {
         const { default: LenisLib } = await import('lenis')
         if (isDisposed) return
 
-        const lenis = new LenisLib({
-          duration: 1.1,
-          easing: t => 1 - Math.pow(1 - t, 3),
+        // Windows 鼠标滚轮是离散事件，保留原有 duration 手感；
+        // macOS 触控板是连续惯性事件流，duration 动画会被反复重启导致抖动，改用 lerp 阻尼。
+        const platform = navigator.userAgentData?.platform || navigator.platform || ''
+        const isMac = /mac/i.test(platform)
 
-          // v1 API 映射
+        const lenis = new LenisLib({
+          ...(isMac
+            ? { lerp: 0.12, wheelMultiplier: 1 }
+            : { duration: 1.1, easing: t => 1 - Math.pow(1 - t, 3), wheelMultiplier: 0.86 }),
+
           autoRaf: true,
           anchors: true,
           stopInertiaOnNavigate: true,
           orientation: 'vertical',
           gestureOrientation: 'vertical',
           smoothWheel: true,
-          // 嵌套滚动容器通过 data-lenis-prevent 显式退出，避免每个滚轮事件遍历 DOM。
           allowNestedScroll: false,
-          // 统一桌面端体感；旧版 Lenis 的 Mac 0.4 倍率会让触控板滚动明显变慢。
-          wheelMultiplier: 0.86,
           syncTouch: false,
           touchMultiplier: 2
         })
