@@ -10,322 +10,632 @@
     <meta property="og:description" content="喜欢我的作品吗？请我喝杯咖啡，支持创作持续更新！">
     <link rel="icon" href="/favicon.svg">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            :root {
-                --gradient: linear-gradient(135deg, #3498db, #2ecc71);
-                --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-            }
+        :root {
+            --bg: #faf6f0;
+            --bg-deep: #f3ebdf;
+            --surface: #ffffff;
+            --ink: #2b2118;
+            --ink-soft: #6f6154;
+            --ink-faint: #a2937f;
+            --accent: #b45309;
+            --accent-soft: #d97706;
+            --accent-wash: rgba(180, 83, 9, 0.08);
+            --wx: #07c160;
+            --zfb: #1677ff;
+            --radius-lg: 28px;
+            --radius-md: 18px;
+            --shadow-card: 0 8px 20px -10px rgba(87, 62, 32, 0.16), 0 2px 6px -4px rgba(87, 62, 32, 0.08);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-            ::-webkit-scrollbar {
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #14100c;
+                --bg-deep: #1c1611;
+                --surface: #221b15;
+                --ink: #f0e8dd;
+                --ink-soft: #b8a995;
+                --ink-faint: #7d6f5d;
+                --accent: #e8a04c;
+                --accent-soft: #d97706;
+                --accent-wash: rgba(232, 160, 76, 0.1);
+                --shadow-card: 0 8px 20px -10px rgba(0, 0, 0, 0.45), 0 2px 6px -4px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { -webkit-text-size-adjust: 100%; }
+
+        body {
+            min-height: 100dvh;
+            font-family: "Outfit", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+            color: var(--ink);
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 20px;
+            position: relative;
+            overflow-x: hidden;
+            overscroll-behavior-x: none; /* 阻止浏览器左右滑动的后退/前进手势 */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- 背景：暖色光晕 + 细网格 ---------- */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background:
+                radial-gradient(900px 600px at 85% -5%, rgba(217, 119, 6, 0.14), transparent 60%),
+                radial-gradient(800px 600px at 5% 105%, rgba(180, 83, 9, 0.10), transparent 55%),
+                linear-gradient(160deg, var(--bg) 0%, var(--bg-deep) 100%);
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                repeating-linear-gradient(90deg, rgba(120, 90, 50, 0.05) 0 1px, transparent 1px 48px),
+                repeating-linear-gradient(0deg, rgba(120, 90, 50, 0.05) 0 1px, transparent 1px 48px);
+            mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 75%);
+        }
+
+        ::selection { background: var(--accent); color: #fff; }
+
+        ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
-            }
+        }
 
-            ::-webkit-scrollbar-track {
-            background-color: rgba(73, 177, 245, 0.2);
+        ::-webkit-scrollbar-track {
+            background-color: rgba(180, 83, 9, 0.12);
             border-radius: 2em;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-            }
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.08);
+        }
 
-            ::-webkit-scrollbar-thumb {
-            background-color: #009ff7;
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--accent);
             background-image: -webkit-linear-gradient(
                 45deg,
-                rgba(255, 255, 255, 0.4) 25%,
+                rgba(255, 255, 255, 0.35) 25%,
                 transparent 25%,
                 transparent 50%,
-                rgba(255, 255, 255, 0.4) 50%,
-                rgba(255, 255, 255, 0.4) 75%,
+                rgba(255, 255, 255, 0.35) 50%,
+                rgba(255, 255, 255, 0.35) 75%,
                 transparent 75%
             );
             border-radius: 2em;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-            }
-
-            ::-webkit-scrollbar-corner {
-            background-color: transparent;
-            }
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.15);
         }
-        
-        body {
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+
+        ::-webkit-scrollbar-corner {
+            background-color: transparent;
+        }
+
+        /* ---------- 页面骨架 ---------- */
+        .page {
+            width: 100%;
+            max-width: 960px;
+            text-align: center;
+        }
+
+        /* ---------- 入场动画 ---------- */
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .rise { opacity: 0; animation: rise 0.9s var(--ease-out) forwards; }
+        .rise-1 { animation-delay: 0.05s; }
+        .rise-2 { animation-delay: 0.18s; }
+        .rise-3 { animation-delay: 0.32s; }
+        .rise-4 { animation-delay: 0.46s; }
+        .rise-5 { animation-delay: 0.6s; }
+
+        /* ---------- 顶部徽章 ---------- */
+        .badge {
+            display: inline-flex;
             align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 999px;
+            background: var(--accent-wash);
+            border: 1px solid rgba(180, 83, 9, 0.18);
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+        }
+
+        .badge svg { width: 14px; height: 14px; }
+
+        /* ---------- 咖啡杯 ---------- */
+        .cup-wrap {
+            margin: 8px auto 2px;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
             position: relative;
         }
 
-           body.bg-grid-aurora::before {
+        .cup { width: 96px; height: auto; overflow: visible; }
+
+        .steam {
+            stroke: var(--accent);
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            fill: none;
+            opacity: 0;
+            animation: steam 3s ease-in-out infinite;
+        }
+        .steam-2 { animation-delay: 1s; }
+        .steam-3 { animation-delay: 2s; }
+
+        @keyframes steam {
+            0%   { opacity: 0; transform: translateY(6px); }
+            35%  { opacity: 0.7; }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        .cup-body {
+            animation: bob 4s ease-in-out infinite;
+            transform-origin: center bottom;
+        }
+
+        @keyframes bob {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-4px); }
+        }
+
+        /* ---------- 标题 ---------- */
+        h1 {
+            margin-top: 14px;
+            font-size: clamp(2.2rem, 6vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        h1 .highlight {
+            position: relative;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        h1 .highlight::after {
             content: '';
             position: absolute;
-            top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
+            bottom: 4px;
+            height: 0.32em;
+            background: var(--accent-wash);
+            border-radius: 4px;
             z-index: -1;
-            background:
-            radial-gradient(1200px 800px at 70% -10%, rgba(30,182,255,.16), transparent 60%),
-            radial-gradient(900px 700px  at 10% 110%, rgba(120,250,220,.16), transparent 55%),
-            repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0 1px, transparent 1px 20px),
-            repeating-linear-gradient(0deg,  rgba(0,0,0,.06) 0 1px, transparent 1px 20px),
-            linear-gradient(135deg, #f9fbff 0%, #eaf2ff 100%);
         }
-   
-        @media (prefers-color-scheme: dark) {
-            body.bg-grid-aurora::before {
-            background:
-                radial-gradient(1200px 800px at 70% -10%, rgba(30,182,255,.28), transparent 60%),
-                radial-gradient(900px 700px  at 10% 110%, rgba(120,250,220,.24), transparent 55%),
-                repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 20px),
-                repeating-linear-gradient(0deg,  rgba(255,255,255,.08) 0 1px, transparent 1px 20px),
-                linear-gradient(135deg, #0b1118 0%, #111a26 100%);
-            }
+
+        .subtitle {
+            margin: 18px auto 0;
+            max-width: 34em;
+            color: var(--ink-soft);
+            font-size: clamp(0.98rem, 2.4vw, 1.1rem);
+            line-height: 1.8;
         }
-                
-        #body {
-            text-align: center;
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
+
+        /* ---------- 捐赠卡片 ---------- */
+        .cards {
+            margin-top: 52px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
+            justify-content: center;
+            gap: 32px;
         }
-        
-        .title {
-            display: inline-block;
-            width: 90%;
-            max-width: 800px;
-            margin: 20px auto 40px;
-            border-radius: 40px;
-            padding: 25px;
-            background-color: #fff;
-            color: #009ff7;
-            font-size: 3.5rem;
-            font-weight: bold;
-            line-height: 1.2;
-            box-shadow: 0 10px 30px rgba(90, 103, 216, 0.2);
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 16px 16px 24px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(120, 90, 50, 0.08);
             position: relative;
             overflow: hidden;
+            transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
         }
-        
-        .title::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+
+        /* 卡片本身静止不跳；仅桌面端保留二维码图片的 hover 放大动效 */
+        @media (hover: hover) and (pointer: fine) {
+            .card:hover .qr-frame img { transform: scale(1.04); }
         }
-        
-        .title span {
-            color: #ff6b6b;
-            font-size: 4rem;
-        }
-        
-        .imgbox {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .inbox {
-            background: white;
-            border-radius: 35px;
-            padding: 25px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            max-width: 450px;
-            width: 100%;
-        }
-        
-        .inbox:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-        
-        .img-container {
-            position: relative;
-            border-radius: 23px;
+
+        .qr-frame {
+            border-radius: calc(var(--radius-md) - 4px);
             overflow: hidden;
-            border: 2px solid #f1f1f1;
-            height: 550px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f8f9fa;
+            background: #f8f6f2;
+            border: 1px solid rgba(120, 90, 50, 0.1);
+            aspect-ratio: 1260 / 1960;
         }
-        
-        .img {
-            width: 400px;
-            height: auto;
+
+        .qr-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.45s var(--ease-out);
         }
-        
-        .inbox:hover .img {
-            transform: scale(1.03);
-        }
-        
+
         .platform {
             margin-top: 20px;
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: #4a5568;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--brand, var(--accent));
         }
-        
-        .platform.wx {
-            color: #07c160;
+
+        .platform svg { width: 24px; height: 24px; }
+
+        .scan-tip {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--brand, var(--accent));
+            opacity: 0.72;
+            letter-spacing: 0.06em;
         }
-        
-        .platform.zfb {
-            color: #1296db;
+
+        /* 双卡配色（全端生效）：玫瑰粉 + 薰衣草紫 */
+        .card.wx {
+            --brand: #d55370;
+            background: #fce3ea;
         }
-        
-        .coffee-icon {
-            position: absolute;
-            top: 36px;
-            right: 172px;
-            font-size: 3.6rem;
-            animation: float 3s ease-in-out infinite;
+
+        .card.zfb {
+            --brand: #7a63c8;
+            background: #e7e1f8;
         }
-        
-        .heart-icon {
-            color: #ff6b6b;
-            animation: pulse 1.5s infinite;
-        }
-        
+
+        /* ---------- 页脚 ---------- */
         .footer {
-            margin-top: 50px;
-            color: #718096;
-            font-size: 1.2rem;
-            padding: 20px;
+            margin-top: 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
         }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+
+        .thanks {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--ink-soft);
+            font-size: 1rem;
+            line-height: 1.7;
         }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+
+        .heart-badge {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            flex: none;
+            border-radius: 50%;
+            background: radial-gradient(circle at 32% 28%, #fff5f7 0%, #ffe0e6 55%, #ffccd5 100%);
+            box-shadow:
+                0 6px 14px -4px rgba(226, 62, 87, 0.45),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            animation: beat 1.8s ease-in-out infinite;
         }
-        
-        @media (max-width: 900px) {
-            .imgbox {
+
+        .heart {
+            width: 18px;
+            height: 18px;
+            filter: drop-shadow(0 1px 2px rgba(226, 62, 87, 0.45));
+        }
+
+        .spark {
+            position: absolute;
+            border-radius: 50%;
+            background: #ff9fb0;
+            animation: twinkle 2.2s ease-in-out infinite;
+        }
+        .spark.s1 { width: 5px; height: 5px; top: 1px; right: 5px; }
+        .spark.s2 { width: 4px; height: 4px; bottom: 3px; left: 2px; animation-delay: 0.7s; background: #ffc2cd; }
+        .spark.s3 { width: 3px; height: 3px; top: 7px; left: -1px; animation-delay: 1.3s; background: #ff8fa3; }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            12%      { transform: scale(1.14); }
+            24%      { transform: scale(1); }
+            36%      { transform: scale(1.09); }
+            48%      { transform: scale(1); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.6); }
+            50%      { opacity: 1; transform: scale(1.15); }
+        }
+
+        .divider {
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--ink-faint), transparent);
+            opacity: 0.5;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: var(--ink-faint);
+            letter-spacing: 0.08em;
+        }
+
+        /* ---------- 移动端卡片组（叠放翻牌） ---------- */
+        .deck-ui { display: none; }
+
+        @media (max-width: 560px) {
+            body { padding: 28px 16px; }
+
+            .cards {
+                margin: 36px auto 0;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                max-width: 360px;
+                gap: 0;
+            }
+
+            .cards .card {
+                grid-area: 1 / 1;
+                padding: 12px 12px 20px;
+                transition: transform 0.35s var(--ease-out), opacity 0.35s var(--ease-out);
+                touch-action: pan-y;
+                user-select: none;
+                -webkit-user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .cards .card img {
+                pointer-events: none;
+                -webkit-user-drag: none;
+            }
+
+            .card.is-front { z-index: 2; }
+
+            /* 后卡：同尺寸，仅向左偏移一点露出底色边缘（不露二维码），前卡保持正常居中 */
+            .card.is-back {
+                z-index: 1;
+                transform: translateX(-8px);
+                pointer-events: none;
+            }
+
+            /* 滑动切换：纯滑走 + 淡出，不缩放 */
+            .card.is-leaving {
+                transform: translateX(-110%);
+                opacity: 0;
+            }
+
+            .card.no-anim { transition: none !important; }
+
+            .deck-ui {
+                display: flex;
                 flex-direction: column;
-                gap: 20px;
+                align-items: center;
+                gap: 10px;
+                margin-top: 6px;
             }
 
-            .title {
-                font-size: 2.5rem;
-                padding: 20px;
-                margin: 15px auto 30px;
+            .deck-hint {
+                font-size: 0.82rem;
+                color: var(--ink-faint);
+                letter-spacing: 0.08em;
             }
 
-            .title span {
-                font-size: 3rem;
+            .deck-dots { display: flex; gap: 8px; }
+
+            .deck-dots .dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 999px;
+                background: var(--ink-faint);
+                opacity: 0.35;
+                transition: all 0.35s var(--ease-out);
             }
 
-            .coffee-icon {
-                font-size: 2.5rem;
-                top: -15px;
-                right: 20px;
+            .deck-dots .dot.active {
+                width: 20px;
+                opacity: 1;
+                background: var(--accent);
             }
 
-            .inbox {
-                max-width: 90%;
-                padding: 20px;
-            }
-
-            .img-container {
-                height: auto;
-            }
-
-            .img {
-                width: 80%;
-                max-width: 320px;
-            }
+            .cup-wrap { margin-top: 6px; }
+            .footer { margin-top: 40px; }
         }
 
-        @media (max-width: 500px) {
-            body {
-                padding: 10px;
+        /* ---------- 降低动效偏好 ---------- */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
-
-            .title {
-                font-size: 1.8rem;
-                padding: 12px;
-                margin: 10px auto 20px;
-                border-radius: 20px;
-            }
-
-            .title span {
-                font-size: 2rem;
-            }
-
-            .img {
-                width: 100%;
-                max-width: 260px;
-            }
-
-            .img-container {
-                height: auto;
-                padding: 10px;
-            }
-
-            .platform {
-                font-size: 1.4rem;
-            }
-
-            .footer {
-                font-size: 1rem;
-                margin-top: 30px;
-            }
+            .rise { opacity: 1; }
         }
     </style>
 </head>
-<body class="bg-grid-aurora">
-    <div id="body">
-        <div class="title">
-            请我喝咖啡~<span></span>
-            <div class="coffee-icon">🍵</div>
+<body>
+    <main class="page">
+        <!-- 顶部徽章 -->
+        <span class="badge rise rise-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 21s-7.5-4.9-9.7-9.2C.7 8.4 2.6 4.5 6.4 4.5c2.2 0 3.7 1.2 5.6 3.4 1.9-2.2 3.4-3.4 5.6-3.4 3.8 0 5.7 3.9 4.1 7.3C19.5 16.1 12 21 12 21z"/>
+            </svg>
+            茉灵智库 · 创作支持
+        </span>
+
+        <!-- 咖啡杯插画 -->
+        <div class="cup-wrap rise rise-2" aria-hidden="true">
+            <svg class="cup" viewBox="0 0 96 96">
+                <!-- 热气 -->
+                <path class="steam steam-1" d="M36 30c-3-5 3-8 0-13"/>
+                <path class="steam steam-2" d="M48 28c-3-5 3-8 0-13"/>
+                <path class="steam steam-3" d="M60 30c-3-5 3-8 0-13"/>
+                <g class="cup-body">
+                    <!-- 杯身 -->
+                    <path d="M24 40h48l-5 34a10 10 0 0 1-10 9H39a10 10 0 0 1-10-9l-5-34z" fill="var(--surface)" stroke="var(--accent)" stroke-width="3.5" stroke-linejoin="round"/>
+                    <!-- 把手 -->
+                    <path d="M72 46h6a8 8 0 0 1 0 16h-7" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
+                    <!-- 咖啡液面 -->
+                    <path d="M29 50h38l-1.2 8H30.2L29 50z" fill="var(--accent)" opacity="0.25"/>
+                    <!-- 杯碟 -->
+                    <ellipse cx="48" cy="88" rx="30" ry="4.5" fill="none" stroke="var(--accent)" stroke-width="3" opacity="0.5"/>
+                </g>
+            </svg>
         </div>
-        
-        <div class="imgbox">
-            <div class="inbox">
-                <div class="img-container">
-                    <img class="img" src="/wxzf.webp" alt="微信捐赠二维码">
+
+        <!-- 标题 -->
+        <h1 class="rise rise-3">请我喝杯<span class="highlight">咖啡</span></h1>
+        <p class="subtitle rise rise-3">
+            如果我的内容对你有帮助，欢迎用一杯咖啡的温度，支持我持续分享与创作。
+        </p>
+
+        <!-- 捐赠卡片 -->
+        <div class="cards rise rise-4">
+            <section class="card wx">
+                <div class="qr-frame">
+                    <img src="/wxzf.webp" alt="微信捐赠二维码" loading="lazy">
                 </div>
-                <div class="platform wx">微信捐赠</div>
-            </div>
-            
-            <div class="inbox">
-                <div class="img-container">
-                    <img class="img" src="/zfbzf.webp" alt="支付宝捐赠二维码">
+                <div class="platform">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M8.7 3C4.9 3 1.8 5.6 1.8 8.8c0 1.8 1 3.5 2.5 4.5l-.6 2 2.2-1.1c.7.2 1.4.3 2.2.3h.4A5.9 5.9 0 0 1 8.3 13c0-3.3 3.2-6 7-6 .3 0 .7 0 1 .1C15.7 4.7 12.5 3 8.7 3zm-2.3 3.2a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8zm4.6 0a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8zM22.2 13c0-2.8-2.7-5-5.9-5s-5.9 2.2-5.9 5 2.7 5 5.9 5c.6 0 1.3-.1 1.9-.3l1.9 1-.5-1.7c1.5-1 2.5-2.4 2.5-4zm-7.9-1.5a.8.8 0 1 1 0 1.5.8.8 0 0 1 0-1.5zm4 0a.8.8 0 1 1 0 1.5.8.8 0 0 1 0-1.5z"/>
+                    </svg>
+                    微信捐赠
                 </div>
-                <div class="platform zfb">支付宝捐赠</div>
+                <p class="scan-tip">打开微信 · 扫一扫</p>
+            </section>
+
+            <section class="card zfb">
+                <div class="qr-frame">
+                    <img src="/zfbzf.webp" alt="支付宝捐赠二维码" loading="lazy">
+                </div>
+                <div class="platform">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M21.4 15.2c-1.6-.6-3.5-1.4-5.5-2 .8-1.3 1.4-2.7 1.8-4.3h-4.1V7.3h5V6h-5V3.6h-2.5V6h-5v1.3h5v1.6H7v1.3h7.6c-.3 1-.8 2-1.4 2.9-2.1-.7-4.4-1.2-5.9-1.2-2.6 0-3.7 1.4-3.7 2.9 0 2.5 2.3 3.4 4.3 3.4 2.4 0 4.5-1.3 6.1-3.3 2.1.9 4.3 2 6.1 2.8l1.3-2.5zM7.6 17c-1.3 0-2.5-.5-2.5-1.6 0-.9.7-1.5 2.1-1.5 1.3 0 3 .5 4.8 1.3-1.3 1.1-2.9 1.8-4.4 1.8z"/>
+                    </svg>
+                    支付宝捐赠
+                </div>
+                <p class="scan-tip">打开支付宝 · 扫一扫</p>
+            </section>
+        </div>
+
+        <!-- 移动端卡片组提示与指示点 -->
+        <div class="deck-ui" aria-hidden="true">
+            <p class="deck-hint">左右滑动卡片，切换支付方式</p>
+            <div class="deck-dots" id="deck-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
             </div>
         </div>
-        
-        <div class="footer">
-            <p>感谢您的支持！每一份捐赠都是对我莫大的鼓励 <span class="heart-icon">💖</span></p>
-        </div>
-    </div>
+
+        <!-- 页脚 -->
+        <footer class="footer rise rise-5">
+            <p class="thanks">
+                感谢你的支持，每一份心意都是莫大的鼓励
+                <span class="heart-badge" aria-hidden="true">
+                    <svg class="heart" viewBox="0 0 24 24">
+                        <defs>
+                            <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#ff8fa3"/>
+                                <stop offset="1" stop-color="#e23e57"/>
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#heartGrad)" d="M12 21s-7.5-4.9-9.7-9.2C.7 8.4 2.6 4.5 6.4 4.5c2.2 0 3.7 1.2 5.6 3.4 1.9-2.2 3.4-3.4 5.6-3.4 3.8 0 5.7 3.9 4.1 7.3C19.5 16.1 12 21 12 21z"/>
+                    </svg>
+                    <span class="spark s1"></span>
+                    <span class="spark s2"></span>
+                    <span class="spark s3"></span>
+                </span>
+            </p>
+            <div class="divider" aria-hidden="true"></div>
+            <p class="copyright">MOLING · BUY ME A COFFEE</p>
+        </footer>
+    </main>
+
+    <script>
+        (function () {
+            var deck = document.querySelector('.cards');
+            if (!deck) return;
+            var cards = Array.prototype.slice.call(deck.querySelectorAll('.card'));
+            if (cards.length < 2) return;
+            var dots = Array.prototype.slice.call(document.querySelectorAll('#deck-dots .dot'));
+            var deckQuery = window.matchMedia('(max-width: 560px)');
+            var front = 0; // 当前在前面的卡片索引
+            var busy = false;
+
+            function render() {
+                cards.forEach(function (card, i) {
+                    card.classList.toggle('is-front', i === front);
+                    card.classList.toggle('is-back', i !== front);
+                });
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle('active', i === front);
+                });
+            }
+
+            function flip() {
+                if (busy || !deckQuery.matches) return;
+                busy = true;
+                var leaving = cards[front];
+                leaving.classList.add('is-leaving');
+                setTimeout(function () {
+                    leaving.classList.add('no-anim');
+                    leaving.classList.remove('is-leaving');
+                    front = (front + 1) % cards.length;
+                    render();
+                    void leaving.offsetWidth; // 强制回流
+                    leaving.classList.remove('no-anim');
+                    busy = false;
+                }, 360);
+            }
+
+            cards.forEach(function (card) {
+                var startX = null, startY = null;
+                card.addEventListener('pointerdown', function (e) {
+                    startX = e.clientX;
+                    startY = e.clientY;
+                });
+                card.addEventListener('pointerup', function (e) {
+                    if (startX === null) return;
+                    var dx = e.clientX - startX;
+                    var dy = e.clientY - startY;
+                    startX = startY = null;
+                    // 仅明确的水平滑动才切换；点按、垂直滚动一律不动
+                    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+                    flip();
+                });
+                card.addEventListener('pointercancel', function () {
+                    startX = startY = null;
+                });
+            });
+
+            dots.forEach(function (dot, i) {
+                dot.addEventListener('click', function () {
+                    if (i !== front) flip();
+                });
+            });
+
+            render();
+        })();
+    </script>
 </body>
 </html>

@@ -135,10 +135,10 @@ const CONFIG = {
   ],
 
   HEO_SOCIAL_CARD: true, // 是否显示右侧，点击加入社群按钮
-  HEO_SOCIAL_CARD_TITLE_1: '公众号',
-  HEO_SOCIAL_CARD_TITLE_2: '防失联关注微信公众号',
-  HEO_SOCIAL_CARD_TITLE_3: '点击扫码关注公众号',
-  HEO_SOCIAL_CARD_URL: 'https://go.88lin.eu.org/gzh/index.html',
+  HEO_SOCIAL_CARD_TITLE_1: '交流群',
+  HEO_SOCIAL_CARD_TITLE_2: '防失联 · 一起聊技术',
+  HEO_SOCIAL_CARD_TITLE_3: '点击加入群聊',
+  HEO_SOCIAL_CARD_URL: 'https://qm.qq.com/q/aKdT9BW3Ye',
 
   // 底部统计面板文案
   HEO_POST_COUNT_TITLE: '文章数:',
