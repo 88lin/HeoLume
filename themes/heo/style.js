@@ -761,39 +761,39 @@ const Style = () => {
           color: rgba(33, 150, 243, 1);
           text-decoration: none;
           border-radius: 5px 5px 0 0;
-          background-image: linear-gradient(90.68deg, #b439df 0.26%, #e5337e 102.37%);
+          background-image:
+              linear-gradient(90.68deg, #b439df 0.26%, #e5337e 102.37%),
+              linear-gradient(rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.2));
           background-repeat: no-repeat;
-          background-origin: border-box;
-          background-position: 50% 100%;
-          background-size: 0 0.1rem;
+          background-origin: border-box, padding-box;
+          background-position: 50% 100%, 0 100%;
+          background-size: 0 2px, 100% 0;
           -webkit-box-decoration-break: clone;
           box-decoration-break: clone;
-          transition:
-              box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              background-size 0.3s ease;
+          transition: background-size 0.3s ease;
       }
 
       .notion a:not(.notion-page-link):not(.notion-collection-card):not(.notion-hash-link):not(.notion-bookmark):not(.blog-link):hover,
       .notion a:not(.notion-page-link):not(.notion-collection-card):not(.notion-hash-link):not(.notion-bookmark):not(.blog-link):focus {
-          box-shadow: inset 0 -1.5em 0 rgba(33, 150, 243, 0.2);
           color: rgba(33, 150, 243, 1);
           border-radius: 6px 6px 0 0;
-          background-size: 100% 0.1rem;
+          background-size: 100% 2px, 100% 1.5em;
       }
 
       .notion a.notion-link:not(.notion-page-link):not(.notion-collection-card):not(.notion-hash-link):not(.notion-bookmark):not(.blog-link) {
           border-bottom-color: transparent !important;
           background-image:
               linear-gradient(90.68deg, #b439df 0.26%, #e5337e 102.37%),
-              linear-gradient(currentColor, currentColor);
-          background-position: 50% 100%, 50% 100%;
-          /* 第二个值 1px 对齐原来 border-bottom: 0.05em 的计算值（浏览器最小取 1px） */
-          background-size: 0 0.1rem, 100% 1px;
+              linear-gradient(to top, currentColor 1px, transparent 1px),
+              linear-gradient(rgba(33, 150, 243, 0.2), rgba(33, 150, 243, 0.2));
+          background-position: 50% 100%, 50% 100%, 0 100%;
+          background-origin: border-box, border-box, padding-box;
+          background-size: 0 2px, 100% 2px, 100% 0;
       }
 
       .notion a.notion-link:not(.notion-page-link):not(.notion-collection-card):not(.notion-hash-link):not(.notion-bookmark):not(.blog-link):hover,
       .notion a.notion-link:not(.notion-page-link):not(.notion-collection-card):not(.notion-hash-link):not(.notion-bookmark):not(.blog-link):focus {
-          background-size: 100% 0.1rem, 100% 1px;
+          background-size: 100% 2px, 100% 2px, 100% 1.5em;
       }
 
       .notion-table-of-contents-item:hover {
