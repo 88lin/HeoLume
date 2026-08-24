@@ -146,6 +146,13 @@ const CONFIG = {
   HEO_SITE_VISIT_TITLE: '访问量:',
   HEO_SITE_VISITOR_TITLE: '访客数:',
 
+  // 文章底部「投喂作者」打赏按钮
+  HEO_ARTICLE_REWARD: true, // 是否显示投喂作者按钮
+  HEO_ARTICLE_REWARD_TITLE: '投喂作者', // 按钮文案
+  HEO_ARTICLE_REWARD_HEADING: '谢谢你的投喂', // 弹层上方的小标题
+  HEO_ARTICLE_REWARD_WECHAT: '/wxzf-qr.webp', // 微信收款码，留空则不显示微信
+  HEO_ARTICLE_REWARD_ALIPAY: '/zfbzf-qr.webp', // 支付宝收款码，留空则不显示支付宝
+
   // *****  以下配置无效，只是预留开发 ****
   // 菜单配置
   HEO_MENU_INDEX: true, // 显示首页

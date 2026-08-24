@@ -1,4 +1,4 @@
-import DarkModeButton from '@/components/DarkModeButton'
+import { Moon, Sun } from '@/components/HeroIcons'
 import { useGlobal } from '@/lib/global'
 import { Dialog, Transition } from '@headlessui/react'
 import SmartLink from '@/components/SmartLink'
@@ -7,9 +7,9 @@ import {
   Fragment,
   useEffect,
   useImperativeHandle,
-  useRef,
   useState
 } from 'react'
+import { toggleDarkModeWithTransition } from '../dayNightTransition'
 import { MenuListSide } from './MenuListSide'
 import TagGroups from './TagGroups'
 
@@ -130,11 +130,10 @@ export default function SlideOver(props) {
  * 深色模式切换按钮
  */
 function DarkModeBlockButton() {
-  const darkModeRef = useRef()
-  const { isDarkMode, locale } = useGlobal()
+  const { isDarkMode, updateDarkMode, locale } = useGlobal()
 
   function handleChangeDarkMode() {
-    darkModeRef?.current?.handleChangeDarkMode()
+    toggleDarkModeWithTransition({ isDarkMode, updateDarkMode })
   }
   return (
     <button
@@ -142,7 +141,9 @@ function DarkModeBlockButton() {
       className={
         'group duration-200 flex justify-between items-center px-4 py-3 bg-[#ffe0b2] dark:bg-[#1d2544] border-none rounded-[1.45rem] transition-all shadow-[4px_4px_10px_rgba(0,0,0,0.08),-4px_-4px_10px_rgba(255,255,255,0.9),inset_2px_2px_4px_rgba(255,255,255,0.6),inset_-1px_-1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.2)] dark:hover:bg-[#243056]'
       }>
-      <DarkModeButton cRef={darkModeRef} className='dark:!text-indigo-300' />{' '}
+      <div className='flex justify-center text-gray-800 dark:!text-indigo-300'>
+        <div className='w-5 h-5'>{isDarkMode ? <Sun /> : <Moon />}</div>
+      </div>{' '}
       <span className='font-medium'>{isDarkMode ? locale.MENU.LIGHT_MODE : locale.MENU.DARK_MODE}</span>
     </button>
   )

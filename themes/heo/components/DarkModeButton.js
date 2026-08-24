@@ -1,7 +1,7 @@
 import { useGlobal } from '@/lib/global'
-import { saveDarkModeToLocalStorage } from '@/themes/themeConfig'
 import { Moon, Sun } from '@/components/HeroIcons'
 import { useImperativeHandle } from 'react'
+import { toggleDarkModeWithTransition } from '../dayNightTransition'
 
 /**
  * 深色模式按钮
@@ -21,14 +21,9 @@ const DarkModeButton = (props) => {
     }
   })
 
-  // 用户手动设置主题
+  // 用户手动设置主题，切换动作在日出/日落动画盖住页面时执行
   const handleChangeDarkMode = () => {
-    const newStatus = !isDarkMode
-    saveDarkModeToLocalStorage(newStatus)
-    updateDarkMode(newStatus)
-    const htmlElement = document.getElementsByTagName('html')[0]
-    htmlElement.classList?.remove(newStatus ? 'light' : 'dark')
-    htmlElement.classList?.add(newStatus ? 'dark' : 'light')
+    toggleDarkModeWithTransition({ isDarkMode, updateDarkMode })
   }
 
   return <div onClick={handleChangeDarkMode} className={`${className || ''} cursor-pointer hover:scale-100 hover:bg-[rgba(139,92,246,0.12)] dark:hover:bg-[rgba(139,92,246,0.2)] rounded-full w-10 h-10 flex justify-center items-center duration-200 transition-all`}>
