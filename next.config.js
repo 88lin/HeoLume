@@ -12,6 +12,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 // 扫描项目 /themes下的目录名
 const themes = scanSubdirectories(path.resolve(__dirname, 'themes'))
+// 扫描 /public 根目录下的独立静态页面，例如 coffee.html -> 'coffee'
+const publicHtmlPages = scanPublicHtmlPages(path.resolve(__dirname, 'public'))
 // 检测用户开启的多语言
 const locales = (function () {
   // 根据BLOG_NOTION_PAGE_ID 检查支持多少种语言数据.
@@ -184,6 +186,52 @@ function scanSubdirectories(directory) {
 }
 
 /**
+ * 扫描 /public 根目录下的独立静态 html 页面（如 coffee.html），返回不带扩展名的页面名。
+ * 只看根目录：子目录里的 html 基本都是第三方产物；index.html 会与首页冲突，排除。
+ * @param {string} publicDir
+ * @returns {string[]} 例如 ['coffee']
+ */
+function scanPublicHtmlPages(publicDir) {
+  try {
+    return fs
+      .readdirSync(publicDir, { withFileTypes: true })
+      .filter(
+        entry =>
+          entry.isFile() &&
+          entry.name.endsWith('.html') &&
+          entry.name !== 'index.html'
+      )
+      .map(entry => entry.name.replace(/\.html$/, ''))
+  } catch (_) {
+    return []
+  }
+}
+
+/**
+ * 为 /public 根目录下的独立静态页面生成重写规则，destination 固定指向真实文件。
+ *
+ * 开启 i18n 后 Next 会先把请求补成 /zh-CN/xxx 再匹配 rewrites，而 public 文件在产物里
+ * 始终位于根目录（coffee.html）。Next 自己的服务器会剥掉语言前缀再查静态文件，Vercel 的
+ * 文件系统层只做字面匹配 —— /zh-CN/coffee.html 匹配不到，就落到 pages/[prefix] 动态路由
+ * 按 Notion slug 查询，查不到即 404。所以这里用 locale: false 自行枚举带语言前缀的 source，
+ * 把 destination 固定成不带前缀的真实路径。
+ * @param {string} suffix source 的后缀，'.html' 匹配原始地址，'' 匹配无扩展名地址
+ * @returns {object[]}
+ */
+function buildPublicHtmlRewrites(suffix) {
+  return publicHtmlPages.flatMap(name =>
+    [
+      `/${name}${suffix}`,
+      ...locales.map(locale => `/${locale}/${name}${suffix}`)
+    ].map(source => ({
+      source,
+      destination: `/${name}.html`,
+      locale: false
+    }))
+  )
+}
+
+/**
  * @type {import('next').NextConfig}
  */
 
@@ -302,27 +350,35 @@ const nextConfig = {
         )
       }
 
-      return [
-        ...langsRewrites,
-        // RSS fallback: when static file doesn't exist, route to API
-        {
-          source: '/rss/feed.xml',
-          destination: '/api/rss'
-        },
-        {
-          source: '/rss/atom.xml',
-          destination: '/api/rss?format=atom'
-        },
-        {
-          source: '/rss/feed.json',
-          destination: '/api/rss?format=json'
-        },
-        // 伪静态重写
-        {
-          source: '/:path*.html',
-          destination: '/:path*'
-        }
-      ]
+      return {
+        // beforeFiles 在文件系统检查之前生效：把 /coffee.html（含语言前缀形式）钉到真实文件上，
+        // 避免被下面的伪静态重写 /:path*.html -> /:path* 改写成 /coffee 落到 Notion 动态路由。
+        beforeFiles: buildPublicHtmlRewrites('.html'),
+        afterFiles: [
+          ...langsRewrites,
+          // RSS fallback: when static file doesn't exist, route to API
+          {
+            source: '/rss/feed.xml',
+            destination: '/api/rss'
+          },
+          {
+            source: '/rss/atom.xml',
+            destination: '/api/rss?format=atom'
+          },
+          {
+            source: '/rss/feed.json',
+            destination: '/api/rss?format=json'
+          },
+          // 无扩展名访问静态页面：/coffee -> /coffee.html。对齐 Cloudflare Pages 的 clean URL
+          // 行为（sitemap 与 SmartLink 用的都是 /coffee），必须排在 /[prefix] 动态路由之前。
+          ...buildPublicHtmlRewrites(''),
+          // 伪静态重写
+          {
+            source: '/:path*.html',
+            destination: '/:path*'
+          }
+        ]
+      }
     },
   headers: process.env.EXPORT
     ? undefined
