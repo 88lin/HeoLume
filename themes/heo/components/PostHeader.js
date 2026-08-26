@@ -70,7 +70,7 @@ export default function PostHeader({ post, siteInfo, isDarkMode, lock }) {
               <>
                 <SmartLink
                   href={`/category/${post.category}`}
-                  className='mr-4'
+                  className='md:mr-4'
                   passHref
                   legacyBehavior>
                   <div className='cursor-pointer font-sm font-bold px-3 py-1 rounded-2xl  hover:bg-white text-white bg-blue-500 dark:bg-purple-700/25 dark:backdrop-blur-xl dark:border dark:border-purple-500/40 dark:text-purple-100/90 dark:hover:bg-purple-700/35 dark:hover:border-purple-400/50 dark:shadow-[inset_0_0.5px_0_rgba(255,255,255,0.08),0_3px_6px_rgba(15,23,42,0.15)] hover:text-blue-500 transition-all duration-200 '>
@@ -101,7 +101,7 @@ export default function PostHeader({ post, siteInfo, isDarkMode, lock }) {
           </div>
 
           {/* 文章Title */}
-          <h1 className='max-w-5xl font-bold text-3xl lg:text-5xl md:leading-snug shadow-text-md flex  justify-center md:justify-start text-white'>
+          <h1 className='max-w-5xl font-bold text-3xl lg:text-5xl md:leading-snug shadow-text-md flex  justify-center md:justify-start text-center md:text-left text-white'>
             {siteConfig('POST_TITLE_ICON') && (
               <NotionIcon icon={post.pageIcon} priority />
             )}
