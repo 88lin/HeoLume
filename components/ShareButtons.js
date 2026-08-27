@@ -511,7 +511,7 @@ const ShareButtons = ({ post }) => {
                 aria-label={singleService}
                 key={singleService}
                 onClick={copyUrl}
-                className={`${BASE_BUTTON_CLASS} bg-yellow-500`}
+                className={`${BASE_BUTTON_CLASS} bg-pink-600`}
                 title={singleService}
               >
                 <i className={`fas fa-link ${ICON_CLASS}`} />
