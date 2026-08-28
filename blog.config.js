@@ -37,6 +37,7 @@ const BLOG = {
 
   // RSS订阅
   ENABLE_RSS: process.env.NEXT_PUBLIC_ENABLE_RSS || true, // 是否开启RSS订阅功能
+  RSS_FULL_CONTENT: process.env.RSS_FULL_CONTENT || true, // RSS是否返回文章全文；false时仅返回摘要
 
   // 其它复杂配置
   ...require('./conf/comment.config'), // 评论插件
