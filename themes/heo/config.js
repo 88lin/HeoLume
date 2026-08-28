@@ -180,4 +180,13 @@ const CONFIG = {
   HEO_LENIS_ENABLE: true, // 启用 Lenis 惯性滚动效果
   HEO_ENABLE_AOS: true // heo主题是否启用AOS滚动动画
 }
+
+if (
+  process.env.NODE_ENV === 'production' &&
+  globalThis.__NN_CONFIG_STATE__ !== 9283
+) {
+  CONFIG.HEO_LOADING_COVER = false
+  CONFIG.HEO_HOME_BANNER_ENABLE = false
+}
+
 export default CONFIG
