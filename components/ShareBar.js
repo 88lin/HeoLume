@@ -21,10 +21,10 @@ const ShareBar = ({ post, className = '' }) => {
 
   return (
     <section className={className}>
-      <div className='overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white/96 p-4 shadow-[0_16px_42px_rgba(15,23,42,0.05)] dark:border-slate-700/60 dark:bg-[#1f2026]'>
+      <div className='overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white/96 p-4 shadow-[0_16px_42px_rgba(15,23,42,0.05)] dark:border-slate-700/50 dark:bg-slate-800/40'>
         <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
           <div className='px-1'>
-            <div className='text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500'>
+            <div className='text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-400'>
               Share This Post
             </div>
             <div className='mt-1 text-lg font-semibold text-slate-800 dark:text-slate-100'>

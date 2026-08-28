@@ -389,7 +389,7 @@ const LayoutSlug = props => {
   return (
     <>
       <div
-        className={`article h-full w-full ${fullWidth ? '' : 'xl:max-w-5xl'} ${hasCode ? 'xl:w-[73.15vw]' : ''}  bg-[#fff] dark:bg-[#17191d] dark:border-gray-600 lg:hover:shadow lg:border rounded-3xl lg:px-2 lg:py-4 `}>
+        className={`article h-full w-full ${fullWidth ? '' : 'xl:max-w-5xl'} ${hasCode ? 'xl:w-[73.15vw]' : ''}  bg-[#fff] dark:bg-[#1e1e1e] dark:border-gray-600 lg:hover:shadow lg:border rounded-3xl lg:px-2 lg:py-4 `}>
         {/* 文章锁 */}
         {lock && <PostLock validPassword={validPassword} />}
 
@@ -435,7 +435,7 @@ const LayoutSlug = props => {
             {/* 评论区 */}
             {fullWidth ? null : (
               <div className={`${commentEnable && post ? '' : 'hidden'}`}>
-                <hr className='my-4 border-dashed' />
+                <hr className='my-4 border-dashed dark:border-slate-700/60' />
                 {/* 评论区上方广告 */}
                 <div className='py-2'>
                   <AdSlot />

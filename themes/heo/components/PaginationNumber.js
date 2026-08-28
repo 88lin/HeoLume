@@ -97,7 +97,7 @@ const PaginationNumber = ({ page, totalPage }) => {
                   jumpToPage()
                 }
               }}
-              className='w-0 group-hover:w-20 group-hover:px-3 transition-all duration-200 bg-gray-100 border-none outline-none h-full rounded-full'
+              className='w-0 group-hover:w-20 group-hover:px-3 transition-all duration-200 bg-gray-100 dark:bg-[#1e1e1e] dark:text-gray-100 border-none outline-none h-full rounded-full'
             />
             <div
               onClick={jumpToPage}

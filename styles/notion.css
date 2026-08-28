@@ -83,6 +83,31 @@ html.dark {
   --bg-color-0: rgba(200, 200, 200, 0.15);
   --bg-color-1: rgb(30, 30, 30);
   --bg-color-2: rgba(200, 200, 200, 0.15);
+
+  --notion-red_background: #4b2020;
+  --notion-pink_background: #4b2036;
+  --notion-blue_background: #233757;
+  --notion-purple_background: #322654;
+  --notion-teal_background: #204b45;
+  --notion-yellow_background: #4c431f;
+  --notion-orange_background: #4d331e;
+  --notion-brown_background: #423229;
+  --notion-gray_background: #353c46;
+  --notion-green_background: #204b30;
+  --notion-default_background: #363c44;
+  --notion-red_background_co: #441d1d;
+  --notion-pink_background_co: #441d30;
+  --notion-blue_background_co: #1c2c45;
+  --notion-purple_background_co: #2e234d;
+  --notion-teal_background_co: #183935;
+  --notion-yellow_background_co: #3a3318;
+  --notion-orange_background_co: #3e2918;
+  --notion-brown_background_co: #392b23;
+  --notion-gray_background_co: #2a2f37;
+  --notion-green_background_co: #183924;
+  --notion-default_background_co: #2b3036;
+  --notion-brown: rgb(202, 158, 130);
+  --notion-gray: rgb(178, 178, 175);
 }
 
 .notion {
@@ -753,7 +778,7 @@ svg.notion-page-icon {
   border-radius: 0.75rem;
   background: rgba(252, 231, 243, 0.7);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-  color: rgb(157, 23, 77);
+  color: #be123c;
   font-family: inherit;
   font-size: 0.9em;
   font-weight: 500;
@@ -763,7 +788,7 @@ html.dark #theme-heo .notion-inline-code {
   border-color: rgba(244, 114, 182, 0.2);
   background: rgba(91, 33, 60, 0.5);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  color: rgba(255, 228, 238, 0.92);
+  color: #fda4af;
 }
 
 @media (max-width: 640px) {
@@ -1858,18 +1883,6 @@ svg + .notion-page-title-text {
   @apply text-gray-600 dark:text-gray-300;
 }
 
-.notion-gray_background,
-.notion-brown_background,
-.notion-orange_background,
-.notion-yellow_background,
-.notion-blue_background,
-.notion-purple_background,
-.notion-teal_background,
-.notion-red_background,
-.notion-pink_background {
-  @apply dark:text-black;
-}
-
 .notion-bookmark:hover {
   @apply border-blue-400;
 }
@@ -2497,4 +2510,102 @@ html.dark .notion-tabs-tab[aria-selected='true'] {
 
 html.dark .notion-tabs-panel {
   color: #e5e7eb;
+}
+
+html.dark .notion-hr:before {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--info-card-primary) 6%, #0f172a 94%) 0%,
+    color-mix(in srgb, var(--info-card-primary) 6%, #0f172a 94%) 50%,
+    transparent 50%,
+    transparent 100%
+  );
+}
+
+html.dark .notion-callout {
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+html.dark .notion-callout.notion-red_background_co {
+  border-color: rgba(248, 113, 113, 0.32);
+}
+
+html.dark .notion-callout.notion-pink_background_co {
+  border-color: rgba(244, 114, 182, 0.32);
+}
+
+html.dark .notion-callout.notion-blue_background_co {
+  border-color: rgba(96, 165, 250, 0.34);
+}
+
+html.dark .notion-callout.notion-purple_background_co {
+  border-color: rgba(167, 139, 250, 0.32);
+}
+
+html.dark .notion-callout.notion-teal_background_co {
+  border-color: rgba(45, 212, 191, 0.3);
+}
+
+html.dark .notion-callout.notion-yellow_background_co {
+  border-color: rgba(250, 204, 21, 0.3);
+}
+
+html.dark .notion-callout.notion-orange_background_co {
+  border-color: rgba(251, 146, 60, 0.32);
+}
+
+html.dark .notion-callout.notion-brown_background_co {
+  border-color: rgba(191, 138, 108, 0.34);
+}
+
+html.dark .notion-callout.notion-gray_background_co {
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+html.dark .notion-callout.notion-green_background_co {
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+html.dark .notion-callout.notion-default_background_co {
+  border-color: rgba(148, 163, 184, 0.26);
+}
+
+html.dark .notion-quote {
+  border-color: rgba(148, 163, 184, 0.42);
+  border-left-color: #60a5fa;
+  box-shadow: none;
+}
+
+html.dark .notion-quote:not([class*='_background']) {
+  background-color: #1f2a45;
+}
+
+html.dark .notion-bookmark {
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html.dark .notion-bookmark:hover {
+  border-color: rgba(96, 165, 250, 0.52);
+}
+
+html.dark .notion-asset-wrapper iframe {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+html.dark .notion-table-of-contents {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+html.dark .notion-simple-table td {
+  border-color: rgba(148, 163, 184, 0.26) !important;
+}
+
+html.dark .notion-collection-card {
+  background: color-mix(in srgb, var(--info-card-primary) 6%, #0f172a 94%);
+  border: 1px solid rgba(51, 65, 85, 0.55);
+}
+
+html.dark .notion-collection-card:hover {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(96, 165, 250, 0.42);
 }

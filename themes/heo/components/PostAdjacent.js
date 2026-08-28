@@ -64,7 +64,7 @@ export default function PostAdjacent({ prev, next }) {
         <SmartLink
           href={`/${prev.slug}`}
           passHref
-          className='cursor-pointer justify-between space-y-1 px-5 py-6 rounded-t-[1.75rem] dark:bg-[#1e1e1e] border dark:border-gray-600 border-b-0 items-center dark:text-white flex flex-col w-full h-18 duration-200'>
+          className='cursor-pointer justify-between space-y-1 px-5 py-6 rounded-t-[1.75rem] dark:bg-slate-800/40 border dark:border-slate-700/50 border-b-0 items-center dark:text-white flex flex-col w-full h-18 duration-200'>
           <div className='flex justify-start items-center w-full'>上一篇</div>
           <div className='flex justify-center items-center text-lg font-bold'>
             {prev.title}
@@ -73,7 +73,7 @@ export default function PostAdjacent({ prev, next }) {
         <SmartLink
           href={`/${next.slug}`}
           passHref
-          className='cursor-pointer justify-between space-y-1 px-5 py-6 rounded-b-[1.75rem] dark:bg-[#1e1e1e] border dark:border-gray-600 items-center dark:text-white flex flex-col w-full h-18 duration-200'>
+          className='cursor-pointer justify-between space-y-1 px-5 py-6 rounded-b-[1.75rem] dark:bg-slate-800/40 border dark:border-slate-700/50 items-center dark:text-white flex flex-col w-full h-18 duration-200'>
           <div className='flex justify-start items-center w-full'>下一篇</div>
           <div className='flex justify-center items-center text-lg font-bold'>
             {next.title}

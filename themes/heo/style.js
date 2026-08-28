@@ -23,21 +23,23 @@ const Style = () => {
         --podcast-btn-bg: #f8fafc;
         --podcast-btn-text: #2563eb;
         --podcast-btn-border: rgba(0, 0, 0, 0.1);
+        --podcast-play-bg: #2563eb;
       }
         
       .dark {
-        --ai-bg: #21232a;
-        --ai-title: #f2b94b;
-        --ai-title-text: #1b1c20;
-        --ai-card-bg: #1d1e22;
-        --ai-card-border: #3d3d3f;
-        --podcast-accent: #818cf8;
-        --podcast-bg: #2a2b33;
-        --podcast-border: #4a4b52;
-        --podcast-progress-bg: rgba(129, 140, 248, 0.1);
-        --podcast-btn-bg: #3f3f46;
-        --podcast-btn-text: #818cf8;
+        --ai-bg: rgba(30, 41, 59, 0.42);
+        --ai-title: #60a5fa;
+        --ai-title-text: #0f172a;
+        --ai-card-bg: rgba(15, 23, 42, 0.5);
+        --ai-card-border: rgba(51, 65, 85, 0.55);
+        --podcast-accent: #60a5fa;
+        --podcast-bg: rgba(30, 41, 59, 0.42);
+        --podcast-border: rgba(51, 65, 85, 0.55);
+        --podcast-progress-bg: rgba(96, 165, 250, 0.12);
+        --podcast-btn-bg: rgba(15, 23, 42, 0.55);
+        --podcast-btn-text: #cbd5e1;
         --podcast-btn-border: rgba(255, 255, 255, 0.08);
+        --podcast-play-bg: #2563eb;
       }
 
       html.dark {
@@ -480,6 +482,12 @@ const Style = () => {
         }
       }
 
+      // 暗色下摘要标签与下方播放按钮同色
+      html.dark #theme-heo #AI-tag {
+        background: #2563eb;
+        color: #fff;
+      }
+
       // 标签滚动动画
       .tags-group-wrapper {
         animation: rowup 60s linear infinite;
@@ -796,17 +804,22 @@ const Style = () => {
           background-size: 100% 2px, 100% 2px, 100% 1.5em;
       }
 
+      /* 侧边目录项：notion.css 只给了 2px 左右内边距，选中背景会紧贴文字 */
+      #theme-heo .notion-table-of-contents-item[data-toc-id] {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      /* 压掉 react-notion-x 自带的灰色 hover（--bg-color-0），hover 色与选中色保持一致 */
       .notion-table-of-contents-item:hover {
         background-color: #ebf4ff !important;
       }
 
       .dark .notion-table-of-contents-item:hover {
-        background-color: #9a34122e !important;
+        background-color: #60a5fa1f !important;
       }
 
-      /* ========== 播客陪读播放器 ========== */
-
-      /* 文章头部胶囊 — 精确匹配参考站 */
+      /* 播客陪读头部胶囊 */
       .podcast-header-badge {
         display: inline-flex;
         align-items: center;
@@ -984,7 +997,7 @@ const Style = () => {
         padding: 0 14px;
         height: 30px;
         border-radius: 15px;
-        background: var(--podcast-accent);
+        background: var(--podcast-play-bg);
         color: #fff;
         font-size: 13px;
         font-weight: 600;
@@ -1072,14 +1085,11 @@ const Style = () => {
       }
 
       html.dark #theme-heo .heo-copyright-card {
-        background:
-          radial-gradient(115% 130% at 100% 100%, rgba(129, 140, 248, 0.18), transparent 58%),
-          radial-gradient(95% 115% at 0% 0%, rgba(56, 189, 248, 0.14), transparent 52%),
-          linear-gradient(158deg, rgba(32, 34, 43, 0.96), rgba(20, 22, 28, 0.98));
+        background: rgba(30, 41, 59, 0.42);
       }
       html.dark #theme-heo .heo-copyright-card__mark {
-        color: #60a5fa;
-        opacity: 0.14;
+        color: #93c5fd;
+        opacity: 0.1;
       }
 
       #theme-heo .heo-copyright-card__license {
@@ -1514,12 +1524,7 @@ const Style = () => {
         pointer-events: none;
       }
       html.dark #theme-heo .heo-reward__panel::before {
-        background: linear-gradient(
-          180deg,
-          oklch(100% 0 0 / 0.34),
-          oklch(100% 0 0 / 0.05) 45%,
-          oklch(0% 0 0 / 0.3)
-        );
+        background: rgba(148, 163, 184, 0.22);
       }
 
       #theme-heo .heo-reward__pop {
@@ -1570,20 +1575,8 @@ const Style = () => {
           0 26px 60px -28px oklch(30% 0.03 274 / 0.42);
       }
       html.dark #theme-heo .heo-reward__panel {
-        background:
-          radial-gradient(
-            80% 50% at 50% 100%,
-            oklch(66% 0.18 252 / 0.18),
-            transparent 72%
-          ),
-          linear-gradient(
-            180deg,
-            oklch(26% 0.008 274 / 0.82),
-            oklch(19% 0.008 274 / 0.86)
-          );
-        box-shadow:
-          0 1px 1px oklch(0% 0 0 / 0.4),
-          0 30px 64px -30px oklch(0% 0 0 / 0.9);
+        background: rgba(21, 33, 55, 0.9);
+        box-shadow: 0 26px 58px -28px rgba(0, 0, 0, 0.85);
       }
       #theme-heo .heo-reward__label {
         text-align: center;
@@ -1602,10 +1595,10 @@ const Style = () => {
         font-weight: 600;
       }
       html.dark #theme-heo .heo-reward__label {
-        color: oklch(68% 0.02 274);
+        color: #94a3b8;
       }
       html.dark #theme-heo .heo-reward__heading {
-        color: oklch(96% 0.004 274);
+        color: #f1f5f9;
       }
       #theme-heo .heo-reward__rule {
         height: 1px;
@@ -1687,7 +1680,7 @@ const Style = () => {
       }
 
       html.dark #theme-heo .heo-reward__name {
-        color: oklch(92% 0.006 274);
+        color: #e2e8f0;
       }
       html.dark #theme-heo .heo-reward__name i {
         color: color-mix(in oklab, var(--heo-brand) 78%, white);

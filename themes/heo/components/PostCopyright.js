@@ -56,13 +56,13 @@ export default function PostCopyright({ siteInfo, post }) {
 
   return (
     <section className='heo-post-footer__copyright'>
-      <div className='heo-copyright-card rounded-[1.75rem] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.97),rgba(248,250,252,0.94))] p-5 shadow-[0_18px_44px_rgba(15,23,42,0.06)] dark:border-slate-700/50 dark:bg-[linear-gradient(180deg,rgba(28,29,35,0.94),rgba(22,23,28,0.96))] dark:shadow-[0_18px_42px_rgba(0,0,0,0.18)] sm:p-6'>
+      <div className='heo-copyright-card rounded-[1.75rem] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.97),rgba(248,250,252,0.94))] p-5 shadow-[0_18px_44px_rgba(15,23,42,0.06)] dark:border-slate-700/50 dark:bg-slate-800/40 dark:shadow-[0_18px_42px_rgba(0,0,0,0.18)] sm:p-6'>
         <div className='heo-copyright-card__watermark' aria-hidden='true'>
           <CCIcon name='cc' className='heo-copyright-card__mark' />
         </div>
         <div className='flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between'>
           <div className='max-w-2xl'>
-            <div className='text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500'>
+            <div className='text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-400'>
               Article Rights
             </div>
             <div className='mt-1 text-2xl font-semibold text-slate-800 dark:text-slate-100'>
@@ -95,9 +95,9 @@ export default function PostCopyright({ siteInfo, post }) {
         </div>
 
         <div className='mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.35fr)]'>
-          <div className='rounded-[1.45rem] border border-slate-200/75 bg-slate-50/72 p-4 dark:border-slate-700/45 dark:bg-slate-900/14'>
+          <div className='rounded-[1.45rem] border border-slate-200/75 bg-slate-50/72 p-4 dark:border-slate-700/50 dark:bg-slate-900/40'>
             <div className='flex items-center gap-4'>
-              <div className='relative h-14 w-14 overflow-hidden rounded-2xl border border-white/80 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.08)] dark:border-white/8 dark:bg-[#262830] dark:shadow-[0_10px_24px_rgba(0,0,0,0.18)]'>
+              <div className='relative h-14 w-14 overflow-hidden rounded-2xl border border-white/80 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.08)] dark:border-white/8 dark:bg-slate-800 dark:shadow-[0_10px_24px_rgba(0,0,0,0.18)]'>
                 <LazyImage
                   src={authorAvatar}
                   className='h-full w-full object-cover'
@@ -105,7 +105,7 @@ export default function PostCopyright({ siteInfo, post }) {
                 />
               </div>
               <div className='min-w-0 flex-1'>
-                <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500'>
+                <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-400'>
                   Author
                 </div>
                 <div className='mt-1 truncate text-lg font-semibold text-slate-800 dark:text-slate-100'>
@@ -124,8 +124,8 @@ export default function PostCopyright({ siteInfo, post }) {
               target='_blank'
               rel='noopener noreferrer license'
               title='Creative Commons BY-NC-ND 4.0'
-              className='heo-copyright-card__license block rounded-[1.3rem] border border-slate-200/75 bg-slate-50/72 p-3.5 dark:border-slate-700/45 dark:bg-slate-900/14 sm:rounded-[1.45rem] sm:p-4'>
-              <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500'>
+              className='heo-copyright-card__license block rounded-[1.3rem] border border-slate-200/75 bg-slate-50/72 p-3.5 dark:border-slate-700/50 dark:bg-slate-900/40 sm:rounded-[1.45rem] sm:p-4'>
+              <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-400'>
                 License
               </div>
               <div className='heo-copyright-card__cc mt-2' aria-hidden='true'>
@@ -139,8 +139,8 @@ export default function PostCopyright({ siteInfo, post }) {
               </div>
             </a>
 
-            <div className='rounded-[1.3rem] border border-slate-200/75 bg-slate-50/72 p-3.5 dark:border-slate-700/45 dark:bg-slate-900/14 sm:rounded-[1.45rem] sm:p-4'>
-              <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500'>
+            <div className='rounded-[1.3rem] border border-slate-200/75 bg-slate-50/72 p-3.5 dark:border-slate-700/50 dark:bg-slate-900/40 sm:rounded-[1.45rem] sm:p-4'>
+              <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-400'>
                 Notice
               </div>
               <div className='mt-2 break-words text-sm font-semibold leading-6 text-slate-800 dark:text-slate-100 sm:text-base'>
@@ -150,12 +150,12 @@ export default function PostCopyright({ siteInfo, post }) {
           </div>
         </div>
 
-        <div className='heo-copyright-card__source mt-4 rounded-[1.45rem] border border-slate-200/75 bg-slate-50/72 p-4 dark:border-slate-700/45 dark:bg-slate-900/14'>
-          <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500'>
+        <div className='heo-copyright-card__source mt-4 rounded-[1.45rem] border border-slate-200/75 bg-slate-50/72 p-4 dark:border-slate-700/50 dark:bg-slate-900/40'>
+          <div className='text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-400'>
             Source URL
           </div>
           <a
-            className='mt-2 block break-all text-sm leading-7 text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-orange-300'
+            className='mt-2 block break-all text-sm leading-7 text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-[#ffc848]'
             href={path}>
             {path}
           </a>
