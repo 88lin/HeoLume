@@ -6,8 +6,21 @@ export const GALLERY_VISIBILITY_WRAPPER_CLASS =
   'notion-gallery-visibility-wrapper'
 
 const getCollectionView = ({ block, ctx }) => {
-  const viewId = block?.view_ids?.[0]
-  return getBlockValue(ctx?.recordMap?.collection_view?.[viewId])
+  return block?.view_ids
+    ?.map(viewId => {
+      const record = ctx?.recordMap?.collection_view?.[viewId]
+      const collectionView = getBlockValue(record)
+
+      return (
+        collectionView?.value?.value ||
+        collectionView?.value ||
+        collectionView ||
+        record?.value?.value ||
+        record?.value ||
+        record
+      )
+    })
+    .find(view => view?.type === 'gallery')
 }
 
 export default function NotionCollection(props) {
