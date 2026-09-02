@@ -19,6 +19,14 @@ const SocialButton = () => {
   const ENABLE_RSS = siteConfig('ENABLE_RSS')
   const CONTACT_BILIBILI = siteConfig('CONTACT_BILIBILI')
   const CONTACT_YOUTUBE = siteConfig('CONTACT_YOUTUBE')
+  const CONTACT_DOUYIN =
+    process.env.NEXT_PUBLIC_CONTACT_DOUYIN || 'https://v.douyin.com/nDD4_ACPRiY'
+  const CONTACT_XIAOHONGSHU =
+    process.env.NEXT_PUBLIC_CONTACT_XIAOHONGSHU ||
+    'https://xhslink.cn/m/2XpLCC92KkJ'
+  const CONTACT_WECHAT_QRCODE =
+    process.env.NEXT_PUBLIC_CONTACT_WECHAT_QRCODE ||
+    'https://cdn.jsdmirror.com/gh/88lin/picx-images-hosting@master/qrcode.1ovwa0ke25.png'
   const [showWechatQR, setShowWechatQR] = useState(false)
   const wechatWrapperRef = useRef(null)
 
@@ -36,18 +44,27 @@ const SocialButton = () => {
     }
   }
 
+  const handleKeyDown = e => {
+    if (e.key === 'Escape') setShowWechatQR(false)
+  }
+
   document.addEventListener('click', handleClickOutside)
-  return () => document.removeEventListener('click', handleClickOutside)
+  document.addEventListener('keydown', handleKeyDown)
+  return () => {
+    document.removeEventListener('click', handleClickOutside)
+    document.removeEventListener('keydown', handleKeyDown)
+  }
 }, [showWechatQR])
 
   return (
-    <div className='w-full justify-center flex-wrap flex'>
-      <div className='space-x-8 text-3xl text-[#4b5563] dark:text-gray-300 '>
+    <div className='w-full h-full px-4 justify-center items-center flex-wrap flex'>
+      <div className='flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-3xl text-[#4b5563] dark:text-gray-300'>
+        {CONTACT_DOUYIN && (
           <a
             target='_blank'
             rel='noreferrer'
             title='douyin'
-            href='https://v.douyin.com/nDD4_ACPRiY'>
+            href={CONTACT_DOUYIN}>
             <img
               src='https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/logo-horizontal-small.svg'
               alt='douyin'
@@ -57,6 +74,24 @@ const SocialButton = () => {
               style={{ width: '1em', height: '1em', verticalAlign: '-0.125em' }}
             />
           </a>
+        )}
+        {CONTACT_XIAOHONGSHU && (
+          <a
+            target='_blank'
+            rel='noreferrer'
+            title='小红书'
+            href={CONTACT_XIAOHONGSHU}>
+            <img
+              src='https://cdn.jsdmirror.com/gh/88lin/picx-images-hosting@master/xiaohongshu.b9cpfgij9.svg'
+              alt='小红书'
+              loading='lazy'
+              decoding='async'
+              className='inline-block transform hover:scale-125 duration-150 dark:hover:opacity-90 hover:opacity-90'
+              style={{ width: '1em', height: '1em', verticalAlign: '-0.125em' }}
+            />
+          </a>
+        )}
+        {CONTACT_WECHAT_QRCODE && (
           <div
             ref={wechatWrapperRef}
             className='relative inline-flex'
@@ -68,11 +103,21 @@ const SocialButton = () => {
             }}
           >
             <span
+              role='button'
+              tabIndex={0}
+              aria-expanded={showWechatQR}
+              aria-label='微信公众号'
               className='cursor-pointer transform transition-transform duration-150 hover:scale-125'
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
                 setShowWechatQR(v => !v)
+              }}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setShowWechatQR(v => !v)
+                }
               }}
             >
               <i className='fab fa-weixin dark:hover:text-indigo-400 hover:text-indigo-600' />
@@ -84,7 +129,7 @@ const SocialButton = () => {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <img
-                    src='https://cdn.jsdmirror.com/gh/88lin/picx-images-hosting@master/qrcode.1ovwa0ke25.png'
+                    src={CONTACT_WECHAT_QRCODE}
                     alt='微信公众号二维码'
                     className='block w-28 h-28 object-contain'
                     draggable={false}
@@ -96,6 +141,7 @@ const SocialButton = () => {
               </div>
             )}
           </div>
+        )}
         {CONTACT_BILIBILI && (
           <a
             target='_blank'
@@ -178,11 +224,13 @@ const SocialButton = () => {
           </a>
         )}
         {ENABLE_RSS && (
+          // 手机上订阅 RSS 没什么意义，窄屏直接收起来给别的图标腾位置
           <a
             target='_blank'
             rel='noreferrer'
             title={'RSS'}
-            href={'/rss/feed.xml'}>
+            href={'/rss/feed.xml'}
+            className='hidden sm:block'>
             <i className='transform hover:scale-125 duration-150 fas fa-rss dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
