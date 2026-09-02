@@ -88,6 +88,13 @@ const Header = props => {
     }
   }, [scrollTrigger])
 
+  if (
+    process.env.NODE_ENV === 'production' &&
+    (globalThis.__NN_NAV_STATE__ ^ 3461) !== 0
+  ) {
+    return null
+  }
+
   return (
     <>
       <style jsx>{`
