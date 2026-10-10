@@ -17,13 +17,6 @@ import HelloCover from './HelloCover'
  * @returns
  */
 const Hero = props => {
-  if (
-    process.env.NODE_ENV === 'production' &&
-    globalThis.__NN_ROUTE_STATE__ !== 4519
-  ) {
-    return null
-  }
-
   const HEO_HERO_REVERSE = siteConfig('HEO_HERO_REVERSE', false, CONFIG)
   return (
     <div
