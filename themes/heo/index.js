@@ -8,6 +8,7 @@ import ShareBar from '@/components/ShareBar'
 import WWAds from '@/components/WWAds'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
+import { hasEnabledComments } from '@/lib/utils/comments'
 import { loadWowJS } from '@/lib/plugins/wow'
 import { Transition } from '@headlessui/react'
 import SmartLink from '@/components/SmartLink'
@@ -400,15 +401,7 @@ const LayoutSlug = props => {
     }
   }, [post, lock])
 
-  const commentEnable =
-    siteConfig('COMMENT_TWIKOO_ENV_ID') ||
-    siteConfig('COMMENT_WALINE_SERVER_URL') ||
-    siteConfig('COMMENT_VALINE_APP_ID') ||
-    siteConfig('COMMENT_GISCUS_REPO') ||
-    siteConfig('COMMENT_CUSDIS_APP_ID') ||
-    siteConfig('COMMENT_UTTERRANCES_REPO') ||
-    siteConfig('COMMENT_GITALK_CLIENT_ID') ||
-    siteConfig('COMMENT_WEBMENTION_ENABLE')
+  const commentEnable = hasEnabledComments(siteConfig)
 
   return (
     <>
