@@ -15,9 +15,14 @@ export default function SearchButton(props) {
   const { locale } = useGlobal()
   const router = useRouter()
   const searchModal = useRef(null)
+  const hasAlgoliaConfig = Boolean(
+    siteConfig('ALGOLIA_APP_ID') &&
+    siteConfig('ALGOLIA_SEARCH_ONLY_APP_KEY') &&
+    siteConfig('ALGOLIA_INDEX')
+  )
 
   function handleSearch() {
-    if (siteConfig('ALGOLIA_APP_ID')) {
+    if (hasAlgoliaConfig && searchModal.current?.openSearch) {
       searchModal.current.openSearch()
     } else {
       router.push('/search')
@@ -25,11 +30,11 @@ export default function SearchButton(props) {
   }
 
   return <>
-        <div onClick={handleSearch} title={locale.NAV.SEARCH} alt={locale.NAV.SEARCH} className='cursor-pointer hover:bg-[rgba(139,92,246,0.12)] dark:hover:bg-[rgba(139,92,246,0.2)] rounded-full w-10 h-10 flex justify-center items-center duration-200 transition-all'>
-            <i title={locale.NAV.SEARCH} className="fa-solid fa-magnifying-glass" />
-        </div>
-        {typeof document !== 'undefined'
-          ? createPortal(<AlgoliaSearchModal cRef={searchModal} {...props}/>, document.body)
+        <button type='button' onClick={handleSearch} title={locale.NAV.SEARCH} aria-label={locale.NAV.SEARCH} className='cursor-pointer hover:bg-[rgba(139,92,246,0.12)] dark:hover:bg-[rgba(139,92,246,0.2)] rounded-full w-10 h-10 flex justify-center items-center duration-200 transition-all'>
+            <i aria-hidden='true' className="fa-solid fa-magnifying-glass" />
+        </button>
+        {hasAlgoliaConfig && typeof document !== 'undefined'
+          ? createPortal(<AlgoliaSearchModal {...props} cRef={searchModal}/>, document.body)
           : null
         }
     </>

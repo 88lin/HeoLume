@@ -8,7 +8,7 @@ import { toggleDarkModeWithTransition } from '../dayNightTransition'
  */
 const DarkModeButton = (props) => {
   const { cRef, className } = props
-  const { isDarkMode, updateDarkMode } = useGlobal()
+  const { isDarkMode, updateDarkMode, locale } = useGlobal()
 
   /**
    * 对外暴露方法
@@ -26,8 +26,8 @@ const DarkModeButton = (props) => {
     toggleDarkModeWithTransition({ isDarkMode, updateDarkMode })
   }
 
-  return <div onClick={handleChangeDarkMode} className={`${className || ''} cursor-pointer hover:scale-100 hover:bg-[rgba(139,92,246,0.12)] dark:hover:bg-[rgba(139,92,246,0.2)] rounded-full w-10 h-10 flex justify-center items-center duration-200 transition-all`}>
-    <div id='darkModeButton' className=' cursor-pointer hover: scale-50 w-10 h-10 '> {isDarkMode ? <Sun /> : <Moon />}</div>
-  </div>
+  return <button type='button' id='darkModeButton' aria-label={isDarkMode ? locale.MENU.LIGHT_MODE : locale.MENU.DARK_MODE} onClick={handleChangeDarkMode} className={`${className || ''} cursor-pointer hover:scale-100 hover:bg-[rgba(139,92,246,0.12)] dark:hover:bg-[rgba(139,92,246,0.2)] rounded-full w-10 h-10 flex justify-center items-center duration-200 transition-all`}>
+    <span aria-hidden='true' className='w-10 h-10'> {isDarkMode ? <Sun /> : <Moon />}</span>
+  </button>
 }
 export default DarkModeButton

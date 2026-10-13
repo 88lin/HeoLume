@@ -16,6 +16,7 @@ import SlideOver from './SlideOver'
  * @returns
  */
 const Header = props => {
+  const [menuOpen, setMenuOpen] = useState(false)
   const [fixedNav, setFixedNav] = useState(false)
   const [textWhite, setTextWhite] = useState(false)
   const [navBgWhite, setBgWhite] = useState(false)
@@ -25,6 +26,7 @@ const Header = props => {
 
   const router = useRouter()
   const slideOverRef = useRef()
+  const menuButtonRef = useRef(null)
   // 缓存 #post-bg 节点的引用，避免每次滚动都重新查询 DOM
   const postBgRef = useRef(null)
 
@@ -272,15 +274,21 @@ const Header = props => {
             <ReadingProgress />
 
             {/* 移动端菜单按钮 */}
-            <div
+            <button
+              ref={menuButtonRef}
+              type='button'
+              aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
+              aria-expanded={menuOpen}
+              aria-haspopup='dialog'
+              aria-controls='heo-mobile-menu'
               onClick={toggleMenuOpen}
               className='flex lg:hidden w-8 justify-center items-center h-8 cursor-pointer'>
-              <i className='fas fa-bars' />
-            </div>
+              <i aria-hidden='true' className='fas fa-bars' />
+            </button>
           </div>
 
           {/* 右边侧拉抽屉 */}
-          <SlideOver cRef={slideOverRef} {...props} />
+          <SlideOver {...props} cRef={slideOverRef} triggerRef={menuButtonRef} onOpenChange={setMenuOpen} />
         </div>
       </nav>
     </>

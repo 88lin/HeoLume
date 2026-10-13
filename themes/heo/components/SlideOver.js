@@ -18,10 +18,11 @@ import TagGroups from './TagGroups'
  * 移动端的菜单在这里
  */
 export default function SlideOver(props) {
-  const { cRef, tagOptions } = props
+  const { cRef, tagOptions, onOpenChange, triggerRef } = props
   const [open, setOpen] = useState(false)
   const { locale } = useGlobal()
   const router = useRouter()
+  useEffect(() => { onOpenChange?.(open) }, [open, onOpenChange])
   /**
    * 函数组件暴露方法useImperativeHandle
    **/
@@ -33,7 +34,7 @@ export default function SlideOver(props) {
    * 开关侧拉抽屉
    */
   const toggleSlideOvers = () => {
-    setOpen(!open)
+    setOpen(value => !value)
   }
 
   /**
@@ -41,11 +42,23 @@ export default function SlideOver(props) {
    */
   useEffect(() => {
     setOpen(false)
-  }, [router])
+  }, [router.asPath])
+
+  useEffect(() => {
+    if (!open || !triggerRef?.current) return
+    const closeWhenTriggerHidden = () => {
+      if (triggerRef.current && window.getComputedStyle(triggerRef.current).display === 'none') {
+        setOpen(false)
+      }
+    }
+    window.addEventListener('resize', closeWhenTriggerHidden)
+    return () => window.removeEventListener('resize', closeWhenTriggerHidden)
+  }, [open, triggerRef])
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as='div' className='relative z-20' onClose={setOpen}>
+      <Dialog as='div' className='relative z-50' onClose={setOpen}>
+        <Dialog.Title className='sr-only'>菜单</Dialog.Title>
         <Transition.Child
           as={Fragment}
           enter='ease-in-out duration-500'
@@ -68,7 +81,7 @@ export default function SlideOver(props) {
                 leave='transform transition ease-in-out duration-500 sm:duration-700'
                 leaveFrom='translate-x-0'
                 leaveTo='translate-x-full'>
-                <Dialog.Panel className='pointer-events-auto relative w-96 max-w-md'>
+                <Dialog.Panel id='heo-mobile-menu' className='pointer-events-auto relative w-96 max-w-md'>
                   {/* 内容 */}
                   <div data-lenis-prevent className='flex h-full flex-col overflow-y-scroll bg-[#f0ebe3] dark:bg-[#141726] py-2 shadow-2xl rounded-l-[2rem]'>
                     {/* 关闭按钮 - 右上角 */}
@@ -137,6 +150,7 @@ function DarkModeBlockButton() {
   }
   return (
     <button
+      type='button'
       onClick={handleChangeDarkMode}
       className={
         'group duration-200 flex justify-between items-center px-4 py-3 bg-[#ffe0b2] dark:bg-[#1d2544] border-none rounded-[1.45rem] transition-all shadow-[4px_4px_10px_rgba(0,0,0,0.08),-4px_-4px_10px_rgba(255,255,255,0.9),inset_2px_2px_4px_rgba(255,255,255,0.6),inset_-1px_-1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.2)] dark:hover:bg-[#243056]'

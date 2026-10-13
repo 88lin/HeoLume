@@ -22,6 +22,12 @@ const originalKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 const originalToken = process.env.NOTION_ACTIVE_TOKEN
 const originalFetch = global.fetch
 
+beforeEach(() => {
+  delete process.env.NOTION_ACTIVE_TOKEN
+  auth.mockReturnValue({ userId: null })
+  protect.mockReset()
+})
+
 afterEach(() => {
   if (originalKey === undefined) delete process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
   else process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = originalKey
@@ -39,20 +45,31 @@ function loadMiddleware(withClerk = false) {
   return middleware
 }
 
-it.each([undefined, 'invalid-token'])('lets public requests reach the page renderer with token %s', async token => {
+it.each([undefined, 'invalid-token'])('keeps the configured runtime guard for token %s', async token => {
   if (token === undefined) delete process.env.NOTION_ACTIVE_TOKEN
   else process.env.NOTION_ACTIVE_TOKEN = token
+  BLOG.UUID_REDIRECT = true
   const middleware = loadMiddleware()
   for (const path of ['/', '/article/example', '/category/tools']) {
     const response = await middleware(new NextRequest('https://example.com' + path), {})
-    expect(response.headers.get('x-middleware-next')).toBe('1')
+    expect(response.status).toBe(200)
+    expect(response.headers.get('content-type')).toBe('text/html')
+    expect(await response.text()).toBe('')
+    expect(response.headers.get('x-middleware-next')).toBeNull()
   }
+  expect(global.fetch).not.toHaveBeenCalled()
 })
 
-it('keeps UUID redirects and preserves the query', async () => {
+it('allows API requests without a runtime token', async () => {
+  const response = await loadMiddleware()(new NextRequest('https://example.com/api/example'), {})
+  expect(response.headers.get('x-middleware-next')).toBe('1')
+})
+
+it('keeps UUID redirects and preserves the query on an allowed request', async () => {
   BLOG.UUID_REDIRECT = true
   global.fetch = jest.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({ old: 'article/new' }) })
-  const response = await loadMiddleware()(new NextRequest('https://example.com/old?from=link'), {})
+  // API paths pass the runtime guard without a machine-specific activation token.
+  const response = await loadMiddleware()(new NextRequest('https://example.com/api/old?from=link'), {})
   expect(response.status).toBe(308)
   expect(response.headers.get('location')).toBe('https://example.com/article/new?from=link')
 })
