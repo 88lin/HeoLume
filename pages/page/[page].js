@@ -1,3 +1,4 @@
+import { getPublicPostBlockMap } from '@/lib/utils/publicPost'
 import BLOG from '@/blog.config'
 import { isExport } from '@/lib/utils/buildMode'
 import { siteConfig } from '@/lib/config'
@@ -82,12 +83,12 @@ export async function getStaticProps({ params: { page }, locale }) {
       if (post.password && post.password !== '') {
         continue
       }
-      const rawBlockMap = await getPostBlocks(
-        post.id,
-        'slug',
-        POST_PREVIEW_LINES
+      const rawBlockMap = await getPostBlocks(post.id, 'slug', POST_PREVIEW_LINES)
+      post.blockMap = getPublicPostBlockMap(
+        post,
+        adapterNotionBlockMap(rawBlockMap),
+        props.allPages
       )
-      post.blockMap = adapterNotionBlockMap(rawBlockMap)
       if (post.blockMap?.block) {
         post.blockMap.block = formatNotionBlock(post.blockMap.block)
       }

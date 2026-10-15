@@ -1,10 +1,23 @@
 /* eslint-disable react/no-unknown-property */
+import CONFIG from './config'
+import { siteConfig } from '@/lib/config'
 /**
  * 此处样式只对当前主题生效
  * 此处不支持tailwindCSS的 @apply 语法
  * @returns
  */
 const Style = () => {
+  const bgColor = siteConfig(
+    'HEO_COLOR_BG',
+    CONFIG.HEO_COLOR_BG || '#f7f9fe',
+    CONFIG
+  )
+  const bgDarkColor = siteConfig(
+    'HEO_COLOR_BG_DARK',
+    CONFIG.HEO_COLOR_BG_DARK || '#18171d',
+    CONFIG
+  )
+
   return (
     <style jsx global>{`
       :root {
@@ -51,7 +64,11 @@ const Style = () => {
       }
 
       body {
-        background-color: #f7f9fe;
+        background-color: ${bgColor};
+      }
+
+      html.dark body {
+        background-color: ${bgDarkColor};
       }
 
       /* 鼠标样式 */

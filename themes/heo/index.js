@@ -401,7 +401,7 @@ const LayoutSlug = props => {
     }
   }, [post, lock])
 
-  const commentEnable = hasEnabledComments(siteConfig)
+  const commentEnable = post?.comment !== 'Hide' && hasEnabledComments(siteConfig)
 
   return (
     <>

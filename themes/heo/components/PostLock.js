@@ -3,9 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 
 /**
  * 加密文章校验组件
- * @param {password, validPassword} props
- * @param password 正确的密码
- * @param validPassword(bool) 回调函数，校验正确回调入参为true
+ * @param {object} props
+ * @param props.validPassword 服务端校验回调，接收输入密码并异步返回布尔值
  * @returns
  */
 export const PostLock = props => {
@@ -14,9 +13,9 @@ export const PostLock = props => {
   const [showError, setShowError] = useState(false)
   const passwordInputRef = useRef(null)
 
-  const submitPassword = () => {
+  const submitPassword = async () => {
     const value = passwordInputRef.current?.value
-    if (!validPassword(value)) {
+    if (!(await validPassword(value))) {
       // 触发抖动动画：先取消再加上，让 CSS 动画重新跑
       setShowError(false)
       // 下一帧再设 true，确保动画重启
@@ -51,7 +50,9 @@ export const PostLock = props => {
             ref={passwordInputRef} // 绑定ref到passwordInputRef变量
             className='outline-none flex-1 min-w-0 text-sm pl-5 rounded-l transition focus:shadow-lg  font-light leading-10 bg-gray-100 dark:bg-gray-500'></input>
           <div
-            onClick={submitPassword}
+            onClick={() => {
+              void submitPassword()
+            }}
             className='flex items-center justify-center whitespace-nowrap cursor-pointer px-4 leading-10 bg-indigo-500 hover:bg-indigo-400 text-white rounded-r duration-300 select-none'>
             <i className={'duration-200 cursor-pointer fas fa-key'} />
             <span className='ml-1'>{locale.COMMON.SUBMIT}</span>

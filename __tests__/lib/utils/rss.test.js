@@ -4,6 +4,7 @@ import { generateRss, shouldGenerateRssForLocale } from '@/lib/utils/rss'
 import { getPostBlocks } from '@/lib/db/SiteDataApi'
 import { formatNotionBlock } from '@/lib/db/notion/getPostBlocks'
 import { adapterNotionBlockMap } from '@/lib/utils/notion.util'
+import ReactDOMServer from 'react-dom/server'
 
 const addItemMock = jest.fn()
 const rss2Mock = jest.fn(() => '<rss>ok</rss>')
@@ -164,5 +165,57 @@ describe('generateRss', () => {
     expect(
       shouldGenerateRssForLocale({ locale: 'en', defaultLocale: 'zh-CN' })
     ).toBe(false)
+  })
+
+  it('filters embedded protected pages while preserving absolute RSS links', async () => {
+    const raw = {
+      block: {
+        public: { value: { type: 'page', content: ['private'] } },
+        private: {
+          value: { type: 'page', parent_id: 'public', content: ['secret'] }
+        },
+        secret: {
+          value: {
+            type: 'text',
+            parent_id: 'private',
+            properties: { title: [['RSS_SECRET']] }
+          }
+        }
+      }
+    }
+    getPostBlocks.mockResolvedValue(raw)
+    adapterNotionBlockMap.mockImplementation(value => value)
+    formatNotionBlock.mockImplementation(value => value)
+    await generateRss({
+      NOTION_CONFIG: { RSS_FULL_CONTENT: true, CONTACT_EMAIL: '' },
+      siteInfo: {
+        title: 'Site',
+        description: 'Feed',
+        link: 'https://example.com'
+      },
+      allPages: [{ id: 'private', password: 'protected' }],
+      allLinkPages: [{ id: 'linked', href: '/related' }],
+      latestPosts: [
+        {
+          id: 'public',
+          title: 'Public',
+          slug: 'article/public',
+          summary: 'Summary',
+          publishDay: '2026-10-15'
+        }
+      ]
+    })
+    const { props } = ReactDOMServer.renderToString.mock.calls[0][0]
+    expect(Object.keys(props.post.blockMap.block)).toEqual(['public'])
+    expect(JSON.stringify(props.post)).not.toContain('RSS_SECRET')
+    expect(props.linkOptions).toEqual(
+      expect.objectContaining({
+        absoluteUrls: true,
+        currentPath: '/article/public',
+        siteOrigin: 'https://example.com',
+        allLinkPages: [{ id: 'linked', href: '/related' }]
+      })
+    )
+    expect(JSON.stringify(raw)).toContain('RSS_SECRET')
   })
 })
