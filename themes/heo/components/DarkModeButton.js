@@ -27,7 +27,7 @@ const DarkModeButton = (props) => {
   }
 
   return <button type='button' id='darkModeButton' aria-label={isDarkMode ? locale.MENU.LIGHT_MODE : locale.MENU.DARK_MODE} onClick={handleChangeDarkMode} className={`${className || ''} cursor-pointer hover:scale-100 hover:bg-[rgba(139,92,246,0.12)] dark:hover:bg-[rgba(139,92,246,0.2)] rounded-full w-10 h-10 flex justify-center items-center duration-200 transition-all`}>
-    <span aria-hidden='true' className='w-10 h-10'> {isDarkMode ? <Sun /> : <Moon />}</span>
+    <span aria-hidden='true' className='block w-5 h-5 shrink-0'> {isDarkMode ? <Sun /> : <Moon />}</span>
   </button>
 }
 export default DarkModeButton

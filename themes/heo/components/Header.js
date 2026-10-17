@@ -283,7 +283,7 @@ const Header = props => {
               aria-controls='heo-mobile-menu'
               onClick={toggleMenuOpen}
               className='flex lg:hidden w-8 justify-center items-center h-8 cursor-pointer'>
-              <i aria-hidden='true' className='fas fa-bars' />
+              <i aria-hidden='true' className='pointer-events-none fas fa-bars' />
             </button>
           </div>
 

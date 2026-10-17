@@ -15,7 +15,7 @@ const Style = () => {
   )
   const bgDarkColor = siteConfig(
     'HEO_COLOR_BG_DARK',
-    CONFIG.HEO_COLOR_BG_DARK || '#18171d',
+    CONFIG.HEO_COLOR_BG_DARK || '#17191d',
     CONFIG
   )
 
@@ -36,7 +36,22 @@ const Style = () => {
   }, [])
 
   return (
-    <style jsx global>{`
+    <>
+      {/* Keep dynamic backgrounds separate: SWC drops escaped Tailwind colons
+          when interpolations turn the custom stylesheet into a JS template.
+          Match this fork's page colors, including configured/preview colors. */}
+      <style jsx global>{`
+      #theme-heo,
+      body {
+        background-color: var(--heo-color-bg, ${bgColor});
+      }
+
+      html.dark #theme-heo,
+      html.dark body {
+        background-color: var(--heo-color-bg-dark, ${bgDarkColor});
+      }
+      `}</style>
+      <style jsx global>{`
       :root {
         --ai-bg: #f0f4ff;
         --ai-title: #2563eb;
@@ -78,14 +93,6 @@ const Style = () => {
 
       * {
         box-sizing: border-box;
-      }
-
-      body {
-        background-color: var(--heo-color-bg, ${bgColor});
-      }
-
-      html.dark body {
-        background-color: var(--heo-color-bg-dark, ${bgDarkColor});
       }
 
       /* 鼠标样式 */
@@ -838,8 +845,9 @@ const Style = () => {
           background-size: 100% 2px, 100% 2px, 100% 1.5em;
       }
 
-      /* 侧边目录项：notion.css 只给了 2px 左右内边距，选中背景会紧贴文字 */
-      #theme-heo .notion-table-of-contents-item[data-toc-id] {
+      /* 侧栏与浮动目录共用内边距；Dialog 的 portal 位于 #theme-heo 之外。 */
+      #theme-heo .notion-table-of-contents-item[data-toc-id],
+      #heo-floating-toc .notion-table-of-contents-item[data-toc-id] {
         padding-left: 10px;
         padding-right: 10px;
       }
@@ -1819,7 +1827,8 @@ const Style = () => {
           transition: none;
         }
       }
-    `}</style>
+      `}</style>
+    </>
   )
 }
 

@@ -18,13 +18,13 @@ function renderCss() {
   return renderToStaticMarkup(<>{registry.styles()}</>)
 }
 
-it('keeps valid light and dark backgrounds when the custom theme omits upstream color settings', () => {
+it('keeps the custom page colors for the page and overscroll when no colors are configured', () => {
   const css = renderCss()
-  expect(css).toMatch(/body\s*\{\s*background-color:\s*var\(--heo-color-bg,\s*#f7f9fe\)/)
-  expect(css).toMatch(/html\.dark\s+body\s*\{\s*background-color:\s*var\(--heo-color-bg-dark,\s*#18171d\)/)
+  expect(css).toMatch(/#theme-heo,\s*body\s*\{\s*background-color:\s*var\(--heo-color-bg,\s*#f7f9fe\)/)
+  expect(css).toMatch(/html\.dark\s+#theme-heo,\s*html\.dark\s+body\s*\{\s*background-color:\s*var\(--heo-color-bg-dark,\s*#17191d\)/)
 })
 
-it('uses configured backgrounds for overscroll in both color modes', () => {
+it('uses the same configured backgrounds for the page and overscroll in both color modes', () => {
   siteConfig.mockImplementation(
     (key, fallback) =>
       ({
@@ -33,6 +33,36 @@ it('uses configured backgrounds for overscroll in both color modes', () => {
       })[key] ?? fallback
   )
   const css = renderCss()
-  expect(css).toMatch(/body\s*\{\s*background-color:\s*var\(--heo-color-bg,\s*#fafafa\)/)
-  expect(css).toMatch(/html\.dark\s+body\s*\{\s*background-color:\s*var\(--heo-color-bg-dark,\s*#101010\)/)
+  expect(css).toMatch(/#theme-heo,\s*body\s*\{\s*background-color:\s*var\(--heo-color-bg,\s*#fafafa\)/)
+  expect(css).toMatch(/html\.dark\s+#theme-heo,\s*html\.dark\s+body\s*\{\s*background-color:\s*var\(--heo-color-bg-dark,\s*#101010\)/)
+})
+
+it.each([{}, { HEO_COLOR_BG: '#fafafa', HEO_COLOR_BG_DARK: '#101010' }])(
+  'preserves escaped custom hover selectors in the compiled stylesheet with %j',
+  config => {
+    siteConfig.mockImplementation((key, fallback) => config[key] ?? fallback)
+    const css = renderCss()
+    // These are literal Tailwind class names, not CSS pseudo-classes. Adding
+    // background interpolation to the large template previously ate the escapes.
+    const selectors = [
+      '.hover\\:bg-indigo-600:hover',
+      '.group:hover .md\\:group-hover\\:bg-indigo-600',
+      '.hover\\:text-indigo-600:hover',
+      '.group:hover .group-hover\\:text-indigo-600',
+      '.group:hover .group-hover\\:text-indigo-700',
+      '.hover\\:text-indigo-700:hover',
+      '.hover\\:border-indigo-600:hover',
+      '.hover\\:border-blue-600:hover',
+      '.dark .hover\\:border-indigo-600:hover',
+      '.dark .hover\\:border-blue-600:hover'
+    ]
+    for (const selector of selectors) expect(css).toContain(selector)
+  }
+)
+
+it('keeps custom catalog spacing for both the sidebar and the portalled dialog', () => {
+  const css = renderCss()
+  expect(css).toMatch(
+    /#theme-heo \.notion-table-of-contents-item\[data-toc-id\],\s*#heo-floating-toc \.notion-table-of-contents-item\[data-toc-id\]\s*\{\s*padding-left:\s*10px;\s*padding-right:\s*10px/
+  )
 })

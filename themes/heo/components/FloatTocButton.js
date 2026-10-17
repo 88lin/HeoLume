@@ -46,7 +46,8 @@ export default function FloatTocButton({ post, lock }) {
         onClick={() => changeTocVisible(value => !value)}
         className='fixed xl:hidden right-4 bottom-24 z-40 w-11 h-11 select-none hover:scale-110 transform duration-200 text-black dark:text-gray-200 rounded-full bg-white drop-shadow-lg flex justify-center items-center dark:bg-hexo-black-gray py-2 px-2'
       >
-        <i aria-hidden='true' className='fa-list-ol fas' />
+        {/* Headless UI must record the focusable button, not the icon, as the click target. */}
+        <i aria-hidden='true' className='pointer-events-none fa-list-ol fas' />
       </button>
 
       <Transition.Root show={tocVisible} as={Fragment}>
