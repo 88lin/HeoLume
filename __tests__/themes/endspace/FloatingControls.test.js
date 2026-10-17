@@ -14,7 +14,9 @@ jest.mock('@headlessui/react', () => ({
 }))
 jest.mock('@/components/NotionPage', () => () => null)
 jest.mock('@/components/ShareBar', () => () => null)
-jest.mock('@/components/Comment', () => () => <div>Discussion</div>)
+jest.mock('@/components/Comment', () => function MockComment() {
+  return <div>Discussion</div>
+})
 jest.mock('@/themes/endspace/style', () => ({ Style: () => null }))
 jest.mock('@/themes/endspace/components/SideNav', () => ({ SideNav: () => null }))
 jest.mock('@/themes/endspace/components/Footer', () => ({ Footer: () => null }))
