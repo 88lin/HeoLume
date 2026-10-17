@@ -450,8 +450,8 @@ const LayoutSlug = props => {
             </article>
 
             {/* 评论区 */}
-            {fullWidth ? null : (
-              <div className={`${commentEnable && post ? '' : 'hidden'}`}>
+            {!fullWidth && commentEnable && (
+              <div>
                 <hr className='my-4 border-dashed dark:border-slate-700/60' />
                 {/* 评论区上方广告 */}
                 <div className='py-2'>

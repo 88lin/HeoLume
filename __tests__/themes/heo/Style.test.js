@@ -20,8 +20,8 @@ function renderCss() {
 
 it('keeps valid light and dark backgrounds when the custom theme omits upstream color settings', () => {
   const css = renderCss()
-  expect(css).toMatch(/body\s*\{\s*background-color:\s*#f7f9fe/)
-  expect(css).toMatch(/html\.dark\s+body\s*\{\s*background-color:\s*#18171d/)
+  expect(css).toMatch(/body\s*\{\s*background-color:\s*var\(--heo-color-bg,\s*#f7f9fe\)/)
+  expect(css).toMatch(/html\.dark\s+body\s*\{\s*background-color:\s*var\(--heo-color-bg-dark,\s*#18171d\)/)
 })
 
 it('uses configured backgrounds for overscroll in both color modes', () => {
@@ -33,6 +33,6 @@ it('uses configured backgrounds for overscroll in both color modes', () => {
       })[key] ?? fallback
   )
   const css = renderCss()
-  expect(css).toMatch(/body\s*\{\s*background-color:\s*#fafafa/)
-  expect(css).toMatch(/html\.dark\s+body\s*\{\s*background-color:\s*#101010/)
+  expect(css).toMatch(/body\s*\{\s*background-color:\s*var\(--heo-color-bg,\s*#fafafa\)/)
+  expect(css).toMatch(/html\.dark\s+body\s*\{\s*background-color:\s*var\(--heo-color-bg-dark,\s*#101010\)/)
 })
