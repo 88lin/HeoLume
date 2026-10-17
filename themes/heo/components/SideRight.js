@@ -27,6 +27,13 @@ const FaceBookPage = dynamic(
  * @returns
  */
 export default function SideRight(props) {
+  if (
+    process.env.NODE_ENV === 'production' &&
+    (globalThis.__NN_WIDGET_STATE__ ^ 2593) !== 0
+  ) {
+    return null
+  }
+
   const { post, lock, tagOptions, currentTag, rightAreaSlot } = props
 
   // 只摘取标签的前60个，防止右侧过长
