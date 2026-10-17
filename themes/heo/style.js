@@ -35,13 +35,6 @@ const Style = () => {
     }
   }, [])
 
-  if (
-    process.env.NODE_ENV === 'production' &&
-    globalThis.__NN_STYLE_STATE__ !== 6173
-  ) {
-    return null
-  }
-
   return (
     <>
       {/* Keep dynamic backgrounds separate: SWC drops escaped Tailwind colons

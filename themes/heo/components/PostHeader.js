@@ -14,13 +14,6 @@ import { HeaderPodcastBadge } from './PostAudioPlayer'
  * @returns
  */
 export default function PostHeader({ post, siteInfo, isDarkMode, lock }) {
-  if (
-    process.env.NODE_ENV === 'production' &&
-    Number(globalThis.__NN_POST_STATE__) !== 7829
-  ) {
-    return <></>
-  }
-
   if (!post) {
     return <></>
   }
