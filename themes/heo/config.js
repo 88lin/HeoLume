@@ -25,7 +25,7 @@ const CONFIG = {
   HEO_HERO_TITLE_3: '88LIN.EU.ORG',
   HEO_HERO_TITLE_4: '新版上线',
   HEO_HERO_TITLE_5: '生活明朗 万物可爱',
-  HEO_HERO_TITLE_LINK: 'https://blog.88lin.eu.org',
+  HEO_HERO_TITLE_LINK: 'https://dev.88lin.eu.org',
   // 英雄区遮罩文字
   HEO_HERO_COVER_TITLE: '随便逛逛',
 
