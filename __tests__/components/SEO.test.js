@@ -24,6 +24,7 @@ const baseSiteConfig = {
   AUTHOR: 'Example Author',
   BACKGROUND_DARK: '#ffffff',
   BLOG_FAVICON: '/favicon.ico',
+  ENABLE_RSS: true,
   FONT_URL: '',
   KEYWORDS: 'notion,next',
   LANG: 'en-US',
@@ -259,6 +260,62 @@ describe('SEO structured data', () => {
       'https://github.com/example',
       'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Example=='
     ])
+  })
+})
+
+describe('SEO RSS discovery', () => {
+  it('exposes an RSS alternate link for readers and browsers', () => {
+    const { container } = renderSeo('')
+    const rssLink = container.querySelector(
+      'link[rel="alternate"][type="application/rss+xml"]'
+    )
+
+    expect(rssLink).toBeInTheDocument()
+    expect(rssLink.getAttribute('href')).toBe(
+      'https://example.com/rss/feed.xml'
+    )
+    expect(container.querySelectorAll('link[type="application/rss+xml"]')).toHaveLength(1)
+    expect(rssLink.getAttribute('title')).toBe('Example Blog RSS')
+  })
+
+  it('uses the deployment subpath without duplicating the RSS declaration', () => {
+    siteConfig.mockImplementation((key, defaultVal) => {
+      if (key === 'SUB_PATH') return '/blog/'
+      return Object.prototype.hasOwnProperty.call(baseSiteConfig, key)
+        ? baseSiteConfig[key]
+        : defaultVal
+    })
+
+    const { container } = render(
+      <SEO siteInfo={{ title: 'Example Blog', link: 'https://example.com' }} />
+    )
+    const rssLinks = container.querySelectorAll('link[type="application/rss+xml"]')
+
+    expect(rssLinks).toHaveLength(1)
+    expect(rssLinks[0].getAttribute('href')).toBe('https://example.com/blog/rss/feed.xml')
+  })
+
+  it('omits the alternate link when RSS is disabled', () => {
+    siteConfig.mockImplementation((key, defaultVal) => {
+      if (key === 'ENABLE_RSS') return false
+      return Object.prototype.hasOwnProperty.call(baseSiteConfig, key)
+        ? baseSiteConfig[key]
+        : defaultVal
+    })
+
+    const { container } = render(
+      <SEO
+        siteInfo={{
+          title: 'Example Blog',
+          description: 'Example description',
+          link: 'https://example.com'
+        }}
+      />
+    )
+
+    expect(
+      container.querySelector('link[type="application/rss+xml"]')
+    ).not.toBeInTheDocument()
   })
 })
 

@@ -87,6 +87,14 @@ const SEO = props => {
   const SITE_NAME = getSiteName(siteInfo, NOTION_CONFIG)
   const description = meta?.description || `${siteInfo?.description}`
   const type = meta?.type === 'Post' ? 'article' : meta?.type || 'website'
+  // 订阅文件的绝对地址，与 lib/utils/rss.js 的静态输出路径保持一致
+  const rssSubPath = String(SUB_PATH || '')
+    .trim()
+    .replace(/^\/+|\/+$/g, '')
+  const rssUrl = createSiteUrl(
+    rssSubPath ? `${LINK}/${rssSubPath}` : LINK,
+    'rss/feed.xml'
+  )
   const language = router?.locale || siteConfig('LANG', 'zh-CN', NOTION_CONFIG)
   const lang = String(language).replace('-', '_')
   const category = Array.isArray(meta?.category)
@@ -183,12 +191,12 @@ const SEO = props => {
           <meta name='application-name' content={pwaConfig?.name} />
         </>
       )}
-      {ENABLE_RSS && (
+      {ENABLE_RSS && rssUrl && (
         <link
           rel='alternate'
           type='application/rss+xml'
           title={`${SITE_NAME} RSS`}
-          href={toAbsolute('/rss/feed.xml', ORIGIN)}
+          href={rssUrl}
         />
       )}
 

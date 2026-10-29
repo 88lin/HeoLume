@@ -1,7 +1,7 @@
 /** @jest-environment node */
 
 import fs from 'fs'
-import { generateRss } from '@/lib/utils/rss'
+import { createFeed, generateRss } from '@/lib/utils/rss'
 import { getPostBlocks } from '@/lib/db/SiteDataApi'
 
 // Exercise the real router hook, NotionPage, React server renderer and Feed.
@@ -37,7 +37,7 @@ jest.mock('react-notion-x', () => ({
   )
 }))
 
-it('generates full-content feeds without a Next router mounted', async () => {
+it.each(['static', 'shared'])('generates %s full-content feeds without a Next router mounted', async mode => {
   jest.spyOn(fs, 'statSync').mockImplementation(() => {
     throw new Error('ENOENT')
   })
@@ -45,7 +45,7 @@ it('generates full-content feeds without a Next router mounted', async () => {
   jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {})
   getPostBlocks.mockResolvedValue({ block: {} })
 
-  await generateRss({
+  const props = {
     NOTION_CONFIG: { RSS_FULL_CONTENT: true, CONTACT_EMAIL: '', INNER_PAGE_URL_PARENT_PATH: true },
     allLinkPages: [{ short_id: 'fcf8-1846-aaaaaaaaaaaa', href: '/links' }],
     siteInfo: {
@@ -55,22 +55,34 @@ it('generates full-content feeds without a Next router mounted', async () => {
     },
     latestPosts: [{
       id: 'post-1',
-      slug: 'article/rss-post',
+      slug: 'rss-post',
       href: '/article/rss-post',
       title: 'RSS article',
       summary: 'Summary only',
       publishDay: '2026-10-03'
     }]
-  })
+  }
+
+  let outputs
+  if (mode === 'static') {
+    await generateRss(props)
+    outputs = fs.writeFileSync.mock.calls.map(([, content]) => content)
+    expect(fs.writeFileSync).toHaveBeenCalledTimes(3)
+  } else {
+    const feed = await createFeed({
+      ...props,
+      posts: props.latestPosts
+    })
+    outputs = [feed.rss2(), feed.atom1(), feed.json1()]
+    expect(fs.writeFileSync).not.toHaveBeenCalled()
+  }
 
   expect(getPostBlocks).toHaveBeenCalledWith('post-1', 'rss-content')
-  for (const filename of ['feed.xml', 'atom.xml', 'feed.json']) {
-    expect(fs.writeFileSync).toHaveBeenCalledWith(
-      `./public/rss/${filename}`,
-      expect.stringContaining('RSS full article content')
-    )
+  for (const content of outputs) {
+    expect(content).toContain('RSS full article content')
   }
-  const jsonFeed = JSON.parse(fs.writeFileSync.mock.calls.find(([path]) => path.endsWith('feed.json'))[1])
+  const jsonFeed = JSON.parse(outputs[2])
+  expect(jsonFeed.items[0].url).toBe('https://example.com/article/rss-post')
   expect(jsonFeed.items[0].content_html).toContain('href="https://example.com/links"')
   expect(jsonFeed.items[0].content_html).toContain('href="https://example.com/article/rss-post/da8daa2f8d19420987d51cc9bdf01241"')
   expect(jsonFeed.items[0].content_html).toContain('href="https://example.com/article/rss-post#chapter-1"')
