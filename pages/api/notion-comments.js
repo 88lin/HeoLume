@@ -11,7 +11,11 @@ import {
 
 const databaseId = process.env.NOTION_COMMENT_DATABASE_ID
 const token = process.env.NOTION_TOKEN
-const requireApproval = process.env.NOTION_COMMENT_REQUIRE_APPROVAL === 'true'
+const anonymousMode = process.env.NEXT_PUBLIC_COMMENT_NOTION_ANONYMOUS === 'true'
+const requireApproval =
+  process.env.NOTION_COMMENT_REQUIRE_APPROVAL === undefined
+    ? anonymousMode
+    : process.env.NOTION_COMMENT_REQUIRE_APPROVAL === 'true'
 const rateWindowMs = 60 * 1000
 const rateLimit = Number(process.env.NOTION_COMMENT_RATE_LIMIT || 5)
 const ipHits = new Map()
@@ -115,7 +119,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' })
   }
 
-  const validation = validateCommentPayload(req.body)
+  const validation = validateCommentPayload(req.body, {
+    anonymous: anonymousMode
+  })
   if (!validation.ok) {
     return res.status(400).json({ error: validation.error })
   }
@@ -141,17 +147,17 @@ export default async function handler(req, res) {
         rich_text: parentId ? [{ text: { content: parentId } }] : []
       },
       Content: { rich_text: [{ text: { content } }] },
-      Author: { email: author },
-      Level: { number: level },
-      IpAddress: {
-        rich_text: [{ text: { content: ip } }]
-      }
+      Level: { number: level }
     }
 
+    if (!anonymousMode) {
+      pageProperties.Author = { email: author }
+      pageProperties.IpAddress = { rich_text: [{ text: { content: ip } }] }
+    }
     if (nickname && hasProperty(properties, 'Nickname', 'rich_text')) {
       pageProperties.Nickname = { rich_text: [{ text: { content: nickname } }] }
     }
-    if (hasProperty(properties, 'EmailHash', 'rich_text')) {
+    if (!anonymousMode && hasProperty(properties, 'EmailHash', 'rich_text')) {
       pageProperties.EmailHash = {
         rich_text: [{ text: { content: hashEmail(author) } }]
       }
@@ -167,7 +173,7 @@ export default async function handler(req, res) {
     if (hasProperty(properties, 'CreatedAt', 'date')) {
       pageProperties.CreatedAt = { date: { start: new Date().toISOString() } }
     }
-    if (hasProperty(properties, 'UserAgent', 'rich_text')) {
+    if (!anonymousMode && hasProperty(properties, 'UserAgent', 'rich_text')) {
       pageProperties.UserAgent = {
         rich_text: [
           { text: { content: String(req.headers['user-agent'] || '') } }
